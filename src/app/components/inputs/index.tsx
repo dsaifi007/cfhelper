@@ -88,7 +88,7 @@ export default function Input({
       size="small"
       fullWidth
       multiline={multiline}
-      rows={"1"}
+      rows={"4"}
       disabled={isDisabled ? isDisabled : false}
       className={className}
       //InputLabelProps={{ shrink: isShrink ? true : false }}
