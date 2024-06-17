@@ -17,7 +17,7 @@ export default function CustomButton({
       disabled={disabled}
       className={`btn ${className}`}
       onClick={onPress}
-      style={style}
+      sx={style}
       size={size}
     >
       {buttonText}

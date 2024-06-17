@@ -13,8 +13,14 @@ import { Form, Formik } from "formik";
 import Input from "./components/inputs";
 import CustomButton from "./components/buttons/CustomButton";
 import Schema from "./schema";
+import { useAppDispatch } from "@/lib/hooks";
+import { useEffect } from "react";
+import { updateDns } from "@/lib/features/dns/dnsSlice";
+import { updateGlobalLoader } from "../lib/features/loader/backdropSlice";
 
 export default function Home() {
+  const dispatch = useAppDispatch();
+
   let initialValue = {
     email: "",
     apiKey: "",
@@ -26,6 +32,10 @@ export default function Home() {
     ipv6: false,
     https: false,
   };
+
+  useEffect(() => {
+    dispatch(updateGlobalLoader(false));
+  }, []);
   return (
     <>
       <Grid container m={4} pl={4}>
