@@ -7,7 +7,10 @@ import Toast from "./components/toast";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import theme from "@/theme";
 import { ThemeProvider } from "@mui/material/styles";
-
+import { useRef } from "react";
+import { Provider } from "react-redux";
+import { store } from "../lib/store";
+import GlobalLoader from "./components/backdrop";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,10 +25,13 @@ export default function RootLayout({
       <body className="bg-color">
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
-            <Header />
-            {children}
-            <Footer />
-            <Toast />
+            <Provider store={store}>
+              <Header />
+              <GlobalLoader />
+              {children}
+              <Footer />
+              <Toast />
+            </Provider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

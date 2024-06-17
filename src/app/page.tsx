@@ -1,7 +1,9 @@
 "use client";
 import {
+  FormControl,
   FormControlLabel,
   FormGroup,
+  FormHelperText,
   Grid,
   InputLabel,
   Switch,
@@ -9,9 +11,31 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import Input from "./components/inputs";
+import CustomButton from "./components/buttons/CustomButton";
+import Schema from "./schema";
+import { useAppDispatch } from "@/lib/hooks";
+import { useEffect } from "react";
+import { updateDns } from "@/lib/features/dns/dnsSlice";
+import { updateGlobalLoader } from "../lib/features/loader/backdropSlice";
 
 export default function Home() {
-  let initialValue = { email: "", apiKey: "", domains: "", ip: "" };
+  const dispatch = useAppDispatch();
+
+  let initialValue = {
+    email: "",
+    apiKey: "",
+    domains: "",
+    ip: "",
+    dns: false,
+    proxied: false,
+    clearCache: false,
+    ipv6: false,
+    https: false,
+  };
+
+  useEffect(() => {
+    dispatch(updateGlobalLoader(false));
+  }, []);
   return (
     <>
       <Grid container m={4} pl={4}>
@@ -27,8 +51,10 @@ export default function Home() {
         initialValues={initialValue}
         enableReinitialize={true}
         validateOnChange={true}
-        //validationSchema={Schema.Deals(t)}
-        onSubmit={(values, { setSubmitting }) => {}}
+        validationSchema={Schema.AddDoaminForm}
+        onSubmit={(values, { setSubmitting }) => {
+          console.log("values", values);
+        }}
       >
         {({
           errors,
@@ -60,7 +86,6 @@ export default function Home() {
                     focused={false}
                     sizeval="medium"
                     placeholder={"e.g. mail@example.com"}
-                    isRequired
                     isShrink={true}
                     values={values.email}
                     onChange={handleChange}
@@ -81,7 +106,6 @@ export default function Home() {
                     placeholder={
                       "Example: g789h67deep45a5544b7b0cupra4678987n22"
                     }
-                    isRequired
                     isShrink={true}
                     values={values.apiKey}
                     onChange={handleChange}
@@ -98,10 +122,10 @@ export default function Home() {
                   <Input
                     name={"domains"}
                     type={"text"}
+                    multiline={true}
                     focused={false}
                     sizeval="medium"
-                    placeholder={"Example: cloudflare.com, cloudflare.com"}
-                    isRequired
+                    placeholder={"Example: cloudflare.com, facebook.com"}
                     isShrink={true}
                     values={values.domains}
                     onChange={handleChange}
@@ -109,6 +133,10 @@ export default function Home() {
                     error={Boolean(touched.domains) && errors.domains}
                     helperText={touched.domains && errors.domains}
                   />
+
+                  <FormHelperText id="component-helper-text">
+                    Write each domain in new line
+                  </FormHelperText>
                 </Grid>
                 <Grid item xs={3} md={3} sm={3} lg={3}></Grid>
                 <Grid item xs={4} md={4} sm={4} lg={4}></Grid>
@@ -120,7 +148,6 @@ export default function Home() {
                     focused={false}
                     sizeval="medium"
                     placeholder={"Example: 88.77.55.86"}
-                    isRequired
                     isShrink={true}
                     values={values.ip}
                     onChange={handleChange}
@@ -137,9 +164,10 @@ export default function Home() {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={false}
+                          checked={values.dns}
+                          value={values.dns}
                           onChange={handleChange}
-                          name="gilad"
+                          name="dns"
                         />
                       }
                       label="Delete Old DNS Records"
@@ -147,9 +175,10 @@ export default function Home() {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={false}
+                          checked={values.proxied}
+                          value={values.proxied}
                           onChange={handleChange}
-                          name="jason"
+                          name="proxied"
                         />
                       }
                       label="Proxied"
@@ -157,9 +186,10 @@ export default function Home() {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={false}
+                          checked={values.clearCache}
+                          value={values.clearCache}
                           onChange={handleChange}
-                          name="antoine"
+                          name="clearCache"
                         />
                       }
                       label="Clear Cache"
@@ -167,9 +197,10 @@ export default function Home() {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={false}
+                          checked={values.ipv6}
+                          value={values.ipv6}
                           onChange={handleChange}
-                          name="antoine"
+                          name="ipv6"
                         />
                       }
                       label="Disable IPv6"
@@ -177,9 +208,10 @@ export default function Home() {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={false}
+                          checked={values.https}
+                          value={values.https}
                           onChange={handleChange}
-                          name="antoine"
+                          name="https"
                         />
                       }
                       label="Always Use HTTPS"
@@ -187,6 +219,24 @@ export default function Home() {
                   </FormGroup>
                 </Grid>
                 <Grid item xs={3} md={3} sm={3} lg={3}></Grid>
+                <Grid item xs={4} md={4} sm={4} lg={4}></Grid>
+                <Grid
+                  item
+                  xs={8}
+                  md={8}
+                  sm={8}
+                  lg={8}
+                  justifyContent="flex-end"
+                  alignItems="right"
+                >
+                  <CustomButton
+                    type="submit"
+                    // onPress={() => {}}
+                    justifyContent="flex-end"
+                    alignItems="right"
+                    buttonText="Submit"
+                  />
+                </Grid>
               </Grid>
             </Form>
           );
