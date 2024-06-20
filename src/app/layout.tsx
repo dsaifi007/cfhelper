@@ -19,7 +19,8 @@ export default function RootLayout({
   return (
     <html>
       <head>
-        <title>Header</title>
+        <title>CFH</title>
+        <link rel="icon" href="/img/favicon.ico" />
         <meta name="cryptomus" content="7bc395c1" />
       </head>
       <body className="bg-color">

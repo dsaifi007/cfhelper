@@ -3,20 +3,17 @@ const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 100000,
   headers: {
-    "Authorization": 'Bearer ' || "",
-    //authorization: import.meta.env.VITE_AUTHORIZATION_KEY,
+    "X-Auth-Email": process.env.NEXT_PUBLIC_EMAIL
   },
 });
 
 axiosInstance.interceptors.request.use(
   (config: any) => {
-    const user = 'Bearer ';
-    const language = "en";
 
-    if (user) {
-      config.headers["Authorization"] = `${user}`;
-    }
-    config.headers["Accept-Language"] = `${language}`;
+    config.headers["X-Auth-Email"] = process.env.NEXT_PUBLIC_EMAIL;
+    config.headers["X-Auth-Key"] = process.env.NEXT_PUBLIC_AUTH_KEY;
+
+    // config.headers["Accept-Language"] = `${language}`;
 
     return config;
   },

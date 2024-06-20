@@ -9,7 +9,7 @@ const label = { inputProps: { "aria-label": "Color switch demo" } };
 const Header = () => {
   return (
     <>
-      <Grid container mt={8} rowSpacing={0}>
+      <Grid container mt={3}>
         <Grid item xs={4} md={4} sm={4} lg={4}>
           <Stack direction={"row"} columnGap={4} height={70}>
             <Image
@@ -35,7 +35,7 @@ const Header = () => {
         </Grid>
         <Grid item xs={4.5} md={4.5} sm={4.5} lg={4.5}></Grid>
         <Grid item xs={1.5} md={1.5} sm={1.5} lg={1.5}>
-          <Stack direction={"row"} columnGap={4}>
+          <Stack direction={"row"} columnGap={2}>
             <LightModeIcon fontSize="large" />
             <Switch {...label} defaultChecked color="default" />
           </Stack>
@@ -54,8 +54,7 @@ const Header = () => {
             />
           </Stack>
         </Grid>
-
-        <Grid item xs={12} md={12} sm={12} lg={12}>
+        <Grid item xs={12} md={12} sm={12} lg={12} mt={-2}>
           <Box borderBottom={10} border={2}></Box>
         </Grid>
       </Grid>
