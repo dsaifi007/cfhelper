@@ -1,11 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface dnsState {
-    dnsData: []
+    dnsData: [],
+    accountID: string,
+    zoneId: string,
+    formData: any
 }
 
 const initialState: dnsState = {
-    dnsData: []
+    dnsData: [],
+    accountID: "",
+    zoneId: "",
+    formData: {}
 };
 
 export const dnsSlice = createSlice({

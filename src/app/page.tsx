@@ -14,12 +14,19 @@ import Input from "./components/inputs";
 import CustomButton from "./components/buttons/CustomButton";
 import Schema from "./schema";
 import { useAppDispatch } from "@/lib/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { updateDns } from "@/lib/features/dns/dnsSlice";
 import { updateGlobalLoader } from "../lib/features/loader/backdropSlice";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { getAccountID } from "@/lib/features/dns/action";
+import Tracking from "./components/tracking";
 
 export default function Home() {
-  const dispatch = useAppDispatch();
+  const dispatch: any = useAppDispatch();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show: any) => !show);
 
   let initialValue = {
     email: "",
@@ -36,6 +43,7 @@ export default function Home() {
   useEffect(() => {
     dispatch(updateGlobalLoader(false));
   }, []);
+
   return (
     <>
       <Grid container m={4} pl={4}>
@@ -43,7 +51,7 @@ export default function Home() {
           <Typography variant="h4" gutterBottom>
             Adding domains and DNS records in CloudFlare
           </Typography>
-          <hr style={{ width: "39%" }}></hr>
+          <hr style={{ width: "45%", position: "relative", left: 60 }}></hr>
         </Grid>
       </Grid>
 
@@ -53,7 +61,12 @@ export default function Home() {
         validateOnChange={true}
         validationSchema={Schema.AddDoaminForm}
         onSubmit={(values, { setSubmitting }) => {
-          console.log("values", values);
+          dispatch(
+            updateDns({
+              formData: values,
+            }),
+          );
+          dispatch(getAccountID());
         }}
       >
         {({
@@ -100,14 +113,17 @@ export default function Home() {
                   <InputLabel required>Your api key</InputLabel>
                   <Input
                     name={"apiKey"}
-                    type={"text"}
+                    type={showPassword ? "text" : "password"}
                     focused={false}
                     sizeval="medium"
                     placeholder={
                       "Example: g789h67deep45a5544b7b0cupra4678987n22"
                     }
+                    handleClickShowPassword={handleClickShowPassword}
+                    isEndAdornment={true}
                     isShrink={true}
                     values={values.apiKey}
+                    showPassword={showPassword}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(touched.apiKey) && errors.apiKey}
@@ -242,6 +258,7 @@ export default function Home() {
           );
         }}
       </Formik>
+      <Tracking />
     </>
   );
 }

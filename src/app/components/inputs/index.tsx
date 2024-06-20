@@ -1,5 +1,6 @@
-import { TextField } from "@mui/material";
+import { TextField, IconButton, InputAdornment } from "@mui/material";
 
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 interface Props {
   label?: string;
   placeholder?: string;
@@ -31,6 +32,8 @@ interface Props {
   regenerateText?: string | "";
   maxRows?: any;
   onPaste?: any;
+  handleClickShowPassword?: any;
+  showPassword?: boolean | false;
 }
 
 export default function Input({
@@ -64,6 +67,8 @@ export default function Input({
   multiline = false,
   maxRows = 0,
   onPaste,
+  handleClickShowPassword,
+  showPassword,
 }: Props) {
   return (
     <TextField
@@ -93,6 +98,20 @@ export default function Input({
       className={className}
       //InputLabelProps={{ shrink: isShrink ? true : false }}
       sx={style}
+      InputProps={{
+        endAdornment: isEndAdornment ? (
+          <InputAdornment position="end">
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+              //onMouseDown={handleMouseDownPassword}
+              edge="end"
+            >
+              {showPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+          </InputAdornment>
+        ) : null,
+      }}
     />
   );
 }
