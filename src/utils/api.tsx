@@ -20,14 +20,7 @@ const postApiCall = (
       successCallback(response);
     })
     .catch((error: any) => {
-      let payload = {
-        data: {
-          statusCode: error.code,
-          message: error.response,
-        },
-      };
-      console.log("error---------------", error);
-      errorCallback(payload);
+      errorCallback(error.response.data);
     });
 };
 
@@ -50,28 +43,7 @@ const getApiCall = (
       successCallback(response);
     })
     .catch((error: any) => {
-      if (!navigator.onLine) {
-        Alert(2, "No internet connection");
-        return;
-      }
-      if (error.code === "ECONNABORTED") {
-        let payload = {
-          data: {
-            statusCode: 408,
-          },
-        };
-        errorCallback(payload);
-      } else if (error.response) {
-        errorCallback(error.response);
-      } else if (!error.response) {
-        let payload = {
-          data: {
-            statusCode: "",
-            message: "Please try again later",
-          },
-        };
-        errorCallback(payload);
-      }
+      errorCallback(error.response.data);
     });
 };
 
@@ -94,28 +66,7 @@ const deleteApiCall = (
       successCallback(response);
     })
     .catch((error: any) => {
-      if (!navigator.onLine) {
-        Alert(2, "No internet connection");
-        return;
-      }
-      if (error.code === "ECONNABORTED") {
-        let payload = {
-          data: {
-            statusCode: 408,
-          },
-        };
-        errorCallback(payload);
-      } else if (error.response) {
-        errorCallback(error.response);
-      } else if (!error.response) {
-        let payload = {
-          data: {
-            statusCode: "",
-            message: "Please try again later",
-          },
-        };
-        errorCallback(payload);
-      }
+      errorCallback(error.response.data);
     });
 };
 
@@ -139,28 +90,7 @@ const patchApiCall = (
       successCallback(response);
     })
     .catch((error: any) => {
-      if (!navigator.onLine) {
-        Alert(2, "No internet connection");
-        return;
-      }
-      if (error.code === "ECONNABORTED") {
-        let payload = {
-          data: {
-            statusCode: 408,
-          },
-        };
-        errorCallback(payload);
-      } else if (error.response) {
-        errorCallback(error.response);
-      } else if (!error.response) {
-        let payload = {
-          data: {
-            statusCode: "",
-            message: "Please try again later",
-          },
-        };
-        errorCallback(payload);
-      }
+      errorCallback(error.response.data);
     });
 };
 /**
@@ -182,28 +112,7 @@ const putApiCall = (
       successCallback(response);
     })
     .catch((error: any) => {
-      if (!navigator.onLine) {
-        Alert(2, "No internet connection");
-        return;
-      }
-      if (error.code === "ECONNABORTED") {
-        let payload = {
-          data: {
-            statusCode: 408,
-          },
-        };
-        errorCallback(payload);
-      } else if (error.response) {
-        errorCallback(error.response);
-      } else if (!error.response) {
-        let payload = {
-          data: {
-            statusCode: "",
-            message: "Please try again later",
-          },
-        };
-        errorCallback(payload);
-      }
+      errorCallback(error.response.data);
     });
 };
 

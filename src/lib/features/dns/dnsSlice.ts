@@ -4,14 +4,18 @@ export interface dnsState {
     dnsData: [],
     accountID: string,
     zoneId: string,
-    formData: any
+    formData: any,
+    apisStatus: any,
+    totalDomains: []
 }
 
 const initialState: dnsState = {
     dnsData: [],
     accountID: "",
     zoneId: "",
-    formData: {}
+    formData: {},
+    apisStatus: [],
+    totalDomains: []
 };
 
 export const dnsSlice = createSlice({

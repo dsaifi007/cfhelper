@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { DOMAIN_REGEX, IPADDRESS_REGEX } from "../utils/constant";
-const AddDoaminForm = (e: any) => {
+const AddDomainForm = (e: any) => {
   return Yup.object().shape({
     email: Yup.string().email().trim().required("Please provide an email"),
     apiKey: Yup.string()
@@ -8,7 +8,18 @@ const AddDoaminForm = (e: any) => {
       .required("API Key is required")
       .max(500, "API Key must be at most 500 characters")
       .min(1, "API Key must be at least 1 characters"),
-    domains: Yup.string().trim().required("Domain is required"),
+    domains: Yup.string()
+      .trim()
+      .required("Domain is required")
+      .test(
+        "valid-domains",
+        "Please provide valid domains, each starting from a new line",
+        (value) => {
+          if (!value) return false;
+          const domains = value.split("\n").map((domain) => domain.trim());
+          return domains.every((domain) => DOMAIN_REGEX.test(domain));
+        },
+      ),
     //.matches(DOMAIN_REGEX, "Please provide a valid domain"),
     ip: Yup.string()
       .trim()
@@ -58,7 +69,7 @@ const Receipint = (e: any) => {
   });
 };
 const Schema = {
-  AddDoaminForm,
+  AddDomainForm,
   PayformForm,
   ReceipintDetails,
   Receipint,

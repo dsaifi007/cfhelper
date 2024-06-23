@@ -13,18 +13,22 @@ import { Form, Formik } from "formik";
 import Input from "./components/inputs";
 import CustomButton from "./components/buttons/CustomButton";
 import Schema from "./schema";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useEffect, useState } from "react";
 import { updateDns } from "@/lib/features/dns/dnsSlice";
 import { updateGlobalLoader } from "../lib/features/loader/backdropSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { getAccountID } from "@/lib/features/dns/action";
+import { getAccountID, handleDomains } from "@/lib/features/dns/action";
 import Tracking from "./components/tracking";
+import { setAuthEmail, setToken } from "@/utils/constant";
+import ProgressDialog from "./components/tracking";
 
 export default function Home() {
   const dispatch: any = useAppDispatch();
-
+  const [open, setOpen] = useState(false);
+  const { apisStatus }: any = useAppSelector((state: any) => state.dnsSlice);
   const [showPassword, setShowPassword] = useState(false);
+  //const [showPassword, setS] = useState<any>([]);
 
   const handleClickShowPassword = () => setShowPassword((show: any) => !show);
 
@@ -39,10 +43,6 @@ export default function Home() {
     ipv6: false,
     https: false,
   };
-
-  useEffect(() => {
-    dispatch(updateGlobalLoader(false));
-  }, []);
 
   return (
     <>
@@ -59,14 +59,21 @@ export default function Home() {
         initialValues={initialValue}
         enableReinitialize={true}
         validateOnChange={true}
-        validationSchema={Schema.AddDoaminForm}
+        validationSchema={Schema.AddDomainForm}
         onSubmit={(values, { setSubmitting }) => {
-          dispatch(
-            updateDns({
-              formData: values,
-            }),
-          );
-          dispatch(getAccountID());
+          setOpen(true);
+          setToken(values.apiKey);
+          setAuthEmail(values.email);
+          let domains = values.domains.split("\n");
+          dispatch(updateDns({ apisStatus: [], totalDomains: domains }));
+          dispatch(handleDomains(domains, values));
+
+          // dispatch(
+          //   updateDns({
+          //     formData: values,
+          //   }),
+          // );
+          //dispatch(getAccountID());
         }}
       >
         {({
@@ -258,7 +265,7 @@ export default function Home() {
           );
         }}
       </Formik>
-      <Tracking />
+      <ProgressDialog open={open} onClose={() => setOpen(false)} />
     </>
   );
 }
