@@ -22,9 +22,7 @@ deploy_dev:
     - chmod 600 id_rsa
   script:
     - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 << 'EOF'
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+        source ~/.bashrc &&
         cd /var/www/cfhelper.com/cloudflare &&
         git reset --hard &&
         git checkout master &&
