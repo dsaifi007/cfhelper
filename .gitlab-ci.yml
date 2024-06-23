@@ -1,0 +1,25 @@
+stages:
+  - deploy
+
+image: docker:latest
+
+variables:
+  REGISTRY: ${CI_REGISTRY}/nnniruuu/crm-backend
+  SSH_PRIVATE_KEY: ${SSH_PRIVATE_KEY}
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+
+deploy_dev:
+  stage: deploy
+  only:
+    refs:
+      - tags
+  image: alpine
+  before_script:
+    - apk update
+    - apk add openssh-client
+    - echo "$SSH_PRIVATE_KEY" > id_rsa
+    - chmod 600 id_rsa
+  script:
+    - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 "cd /var/www/cfhelper.com/cloudflare && git checkout master && git pull"
+    - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 "cd /var/www/cfhelper.com/cloudflare && npm install && npm run build && pm2 restart cloudflare"
