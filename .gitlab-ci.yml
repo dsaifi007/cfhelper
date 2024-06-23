@@ -21,6 +21,4 @@ deploy_dev:
     - echo "$SSH_PRIVATE_KEY" > id_rsa
     - chmod 600 id_rsa
   script:
-    - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 "cd /var/www/cfhelper.com/cloudflare && git reset --hard && git checkout master && git pull"
-    - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 "source ~/.bashrc && cd /var/www/cfhelper.com/cloudflare && npm i && npm run build"
-    - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 "source ~/.bashrc && cd /var/www/cfhelper.com/cloudflare && pm2 restart cloudflare"
+    - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 "/bin/bash /var/www/cfhelper.com/cloudflare/deploy_script.sh"
