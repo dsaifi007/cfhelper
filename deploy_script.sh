@@ -1,16 +1,16 @@
 #!/bin/bash
 
-set -e  # Exit immediately if any command fails
+set -e
 
 cd /var/www/cfhelper.com/cloudflare
 echo "Current directory: $(pwd)"
 
-git reset --hard
-git checkout master
-git pull
-
 echo "Sourcing .bashrc..."
-source ~/.bashrc
+source ~/.bashrc || true 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 echo "Running npm install..."
 npm install
