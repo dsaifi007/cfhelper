@@ -91,6 +91,7 @@ export default function Input({
       maxRows={maxRows}
       // size={sizeval}
       size="small"
+      color={values ? "success" : "error"}
       fullWidth
       multiline={multiline}
       rows={"4"}

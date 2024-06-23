@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import {
   Dialog,
@@ -17,20 +18,18 @@ import {
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSelector } from "react-redux";
+import { PLEASE_WAIT_TEXT } from "@/utils/constant";
 
 const ProgressDialog = ({ open, onClose }: any) => {
-  const tasks = [
-    "create zone testing123456.xyz",
-    "create DNS record testing123456.xyz",
-    "create DNS record www",
-    "ipv6 off",
-    "NS: annabel.ns.cloudflare.com, sonny.ns.cloudflare.com",
-  ];
+  const { apisStatus, totalDomains } = useSelector(
+    (state: any) => state.dnsSlice,
+  );
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle>
-        Domain Tracking
+        Domains Tracking
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -46,63 +45,128 @@ const ProgressDialog = ({ open, onClose }: any) => {
       </DialogTitle>
       <DialogContent dividers>
         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-          <Typography variant="h6">100% Complete</Typography>
+          <Typography variant="h6">
+            {apisStatus.length == 0
+              ? "Please wait while api is in progress"
+              : (100 / totalDomains.length) * apisStatus.length + "% Completed"}
+          </Typography>
         </Box>
         <Box mb={2}>
           <LinearProgress
             variant="determinate"
-            value={50}
+            value={(100 / totalDomains.length) * apisStatus.length}
             sx={{ height: 15, borderRadius: 5 }}
           />
         </Box>
         <List>
-          <Box border={1} p={2} mb={2} borderColor="grey.300">
-            <Typography pt={2} pb={2} variant="h6">
-              100% Complete
-            </Typography>
-            {tasks.map((task, index) => (
-              <Box
-                key={index}
-                border={1}
-                borderColor="grey.300"
-                borderRadius={2}
-                mb={1}
-                p={1}
-              >
-                <ListItem>
-                  <ListItemText primary={task} />
-                  <Typography variant="body2" sx={{ color: "green" }}>
-                    <DoneOutlinedIcon color="success" />
-                    <ClearOutlinedIcon color="error" />
-                  </Typography>
-                </ListItem>
+          {totalDomains?.map((v: any, i: number) => {
+            return (
+              <Box key={i} border={1} p={2} mb={2} borderColor="grey.300">
+                <Typography pt={2} pb={2} variant="h6">
+                  {v}
+                </Typography>
+                <Box
+                  border={1}
+                  borderColor="grey.300"
+                  borderRadius={2}
+                  mb={1}
+                  p={1}
+                >
+                  <ListItem>
+                    <ListItemText primary={`create zone ${v}`} />
+                    <Typography variant="body2" sx={{ color: "green" }}>
+                      {apisStatus[i]?.step1 == undefined ? (
+                        PLEASE_WAIT_TEXT
+                      ) : apisStatus[i]?.step1 ? (
+                        <DoneOutlinedIcon color="success" />
+                      ) : (
+                        <ClearOutlinedIcon color="error" />
+                      )}
+                    </Typography>
+                  </ListItem>
+                </Box>
+                <Box
+                  border={1}
+                  borderColor="grey.300"
+                  borderRadius={2}
+                  mb={1}
+                  p={1}
+                >
+                  <ListItem>
+                    <ListItemText primary={`create DNS record ${v}`} />
+                    <Typography variant="body2" sx={{ color: "green" }}>
+                      {apisStatus[i]?.step1 == undefined ? (
+                        PLEASE_WAIT_TEXT
+                      ) : apisStatus[i]?.step1 ? (
+                        <DoneOutlinedIcon color="success" />
+                      ) : (
+                        <ClearOutlinedIcon color="error" />
+                      )}
+                    </Typography>
+                  </ListItem>
+                </Box>
+                <Box
+                  border={1}
+                  borderColor="grey.300"
+                  borderRadius={2}
+                  mb={1}
+                  p={1}
+                >
+                  <ListItem>
+                    <ListItemText primary={"create DNS record www"} />
+                    <Typography variant="body2" sx={{ color: "green" }}>
+                      {apisStatus[i]?.step2 == undefined ? (
+                        PLEASE_WAIT_TEXT
+                      ) : apisStatus[i]?.step2 ? (
+                        <DoneOutlinedIcon color="success" />
+                      ) : (
+                        <ClearOutlinedIcon color="error" />
+                      )}
+                    </Typography>
+                  </ListItem>
+                </Box>
+                <Box
+                  border={1}
+                  borderColor="grey.300"
+                  borderRadius={2}
+                  mb={1}
+                  p={1}
+                >
+                  <ListItem>
+                    <ListItemText primary={"ipv6 off"} />
+                    <Typography variant="body2" sx={{ color: "green" }}>
+                      {apisStatus[i]?.proxied ? (
+                        <DoneOutlinedIcon color="success" />
+                      ) : (
+                        <ClearOutlinedIcon color="error" />
+                      )}
+                    </Typography>
+                  </ListItem>
+                </Box>
+                <Box
+                  border={1}
+                  borderColor="grey.300"
+                  borderRadius={2}
+                  mb={1}
+                  p={1}
+                >
+                  <ListItem>
+                    <ListItemText
+                      primary={`NS: ${
+                        apisStatus[i]?.name_servers?.length > 0
+                          ? apisStatus[i]?.name_servers?.toString()
+                          : PLEASE_WAIT_TEXT
+                      } `}
+                    />
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "green" }}
+                    ></Typography>
+                  </ListItem>
+                </Box>
               </Box>
-            ))}
-          </Box>
-
-          <Box border={1} mb={2} p={2} borderColor="grey.300">
-            <Typography pt={2} pb={2} variant="h6">
-              100% Complete
-            </Typography>
-            {tasks.map((task, index) => (
-              <Box
-                key={index}
-                border={1}
-                borderColor="grey.300"
-                borderRadius={2}
-                mb={1}
-                p={1}
-              >
-                <ListItem>
-                  <ListItemText primary={task} />
-                  <Typography variant="body2" sx={{ color: "green" }}>
-                    <DoneOutlinedIcon color="success" />
-                    <ClearOutlinedIcon color="error" />
-                  </Typography>
-                </ListItem>
-              </Box>
-            ))}
-          </Box>
+            );
+          })}
         </List>
       </DialogContent>
       <DialogActions>
@@ -114,25 +178,4 @@ const ProgressDialog = ({ open, onClose }: any) => {
   );
 };
 
-const Tracking = () => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  return (
-    <div>
-      <Button variant="contained" color="primary" onClick={handleOpen}>
-        Show Progress
-      </Button>
-      <ProgressDialog open={open} onClose={handleClose} />
-    </div>
-  );
-};
-
-export default Tracking;
+export default ProgressDialog;

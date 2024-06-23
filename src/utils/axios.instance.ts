@@ -1,17 +1,18 @@
 import axios from "axios";
+import { getAuthEmail, getToken } from "./constant";
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 100000,
   headers: {
-    "X-Auth-Email": process.env.NEXT_PUBLIC_EMAIL
+    "X-Auth-Email": getAuthEmail()// process.env.NEXT_PUBLIC_EMAIL
   },
 });
 
 axiosInstance.interceptors.request.use(
   (config: any) => {
 
-    config.headers["X-Auth-Email"] = process.env.NEXT_PUBLIC_EMAIL;
-    config.headers["X-Auth-Key"] = process.env.NEXT_PUBLIC_AUTH_KEY;
+    config.headers["X-Auth-Email"] = getAuthEmail();// process.env.NEXT_PUBLIC_EMAIL;
+    config.headers["X-Auth-Key"] = getToken(); //process.env.NEXT_PUBLIC_AUTH_KEY;
 
     // config.headers["Accept-Language"] = `${language}`;
 
