@@ -14,6 +14,7 @@ deploy_dev:
   only:
     refs:
       - master
+      - dev
   image: alpine
   before_script:
     - apk update
@@ -21,6 +22,18 @@ deploy_dev:
     - echo "$SSH_PRIVATE_KEY" > id_rsa
     - chmod 600 id_rsa
   script:
-    - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 "cd /var/www/cfhelper.com/cloudflare && git reset --hard && git checkout master && git pull"
-    - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 "source ~/.bashrc && cd /var/www/cfhelper.com/cloudflare && npm i && npm run build"
-    - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 "source ~/.bashrc && cd /var/www/cfhelper.com/cloudflare && pm2 restart cloudflare"
+    - ssh -o StrictHostKeyChecking=no -i id_rsa root@193.3.168.81 << 'EOF'
+        cd /var/www/cfhelper.com/cloudflare &&
+        echo "Current directory: $(pwd)" &&
+        git reset --hard &&
+        git checkout master &&
+        git pull &&
+        echo "Sourcing .bashrc..." &&
+        source ~/.bashrc &&
+        echo "Running npm install..." &&
+        npm install &&
+        echo "Running npm run build..." &&
+        npm run build &&
+        echo "Restarting PM2 process..." &&
+        pm2 restart cloudflare
+      EOF
