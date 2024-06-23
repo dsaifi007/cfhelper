@@ -14,7 +14,6 @@ deploy_dev:
   only:
     refs:
       - master
-      - dev
   image: alpine
   before_script:
     - apk update
