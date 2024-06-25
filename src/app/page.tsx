@@ -22,19 +22,46 @@ import { getAccountID, handleDomains } from "@/lib/features/dns/action";
 import Tracking from "./components/tracking";
 import { setAuthEmail, setToken } from "@/utils/constant";
 import ProgressDialog from "./components/tracking";
-
+import { useRouter } from "next/navigation";
+import axios from "axios";
 export default function Home() {
   const dispatch: any = useAppDispatch();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const { apisStatus }: any = useAppSelector((state: any) => state.dnsSlice);
   const [showPassword, setShowPassword] = useState(false);
   //const [showPassword, setS] = useState<any>([]);
-
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
   const handleClickShowPassword = () => setShowPassword((show: any) => !show);
+
+  const fetchData = async ({ email, apiKey }: any) => {
+    try {
+      const res = await axios.post("/api", {
+        email: email,
+        apiKey: apiKey,
+      });
+      setData(res.data);
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+  console.log("data", data);
+  // let initialValue = {
+  //   email: "neelson8826@gmail.com",
+  //   apiKey: "a4be316ee7a00ac0b9e080da7bc3eae745a01", //"27795ac70b1ba3626a4b11049ba8baac64361",
+  //   domains: "www.com",
+  //   ip: "12.12.12.12",
+  //   dns: false,
+  //   proxied: false,
+  //   clearCache: false,
+  //   ipv6: false,
+  //   https: false,
+  // };
 
   let initialValue = {
     email: "",
-    apiKey: "",
+    apiKey: "", //"27795ac70b1ba3626a4b11049ba8baac64361",
     domains: "",
     ip: "",
     dns: false,
@@ -43,10 +70,9 @@ export default function Home() {
     ipv6: false,
     https: false,
   };
-
   return (
     <>
-      <Grid container m={4} pl={4}>
+      <Grid container>
         <Grid item xs={12} md={12} sm={12} lg={12} textAlign={"center"}>
           <Typography variant="h4" gutterBottom>
             Adding domains and DNS records in CloudFlare
@@ -64,8 +90,16 @@ export default function Home() {
           setOpen(true);
           setToken(values.apiKey);
           setAuthEmail(values.email);
+          //router.push("/api");
           let domains = values.domains.split("\n");
-          dispatch(updateDns({ apisStatus: [], totalDomains: domains }));
+          // fetchData(values);
+          dispatch(
+            updateDns({
+              apisStatus: [],
+              totalDomains: domains,
+              formData: values,
+            }),
+          );
           dispatch(handleDomains(domains, values));
 
           // dispatch(

@@ -1,18 +1,23 @@
 module.exports = {
-  images: {
-    remotePatterns: [
+  async headers() {
+    return [
       {
-        protocol: 'https',
-        hostname: 'backend.dealsquad.pics',
-        port: '',
-        pathname: '/storage/uploads/**',
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*", // Set your origin
+          },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "GET, POST, PUT, DELETE, OPTIONS",
+          },
+          {
+            key: "Access-Control-Allow-Headers",
+            value: "Content-Type, Authorization",
+          },
+        ],
       },
-      {
-        protocol: 'http',
-        hostname: '127.0.0.1',
-        port: '8001',
-        pathname: '/storage/uploads/**',
-      },
-    ],
+    ];
   },
 }
