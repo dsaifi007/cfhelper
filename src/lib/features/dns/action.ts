@@ -29,7 +29,7 @@ export const getAccountID = (domain: string, index: number, formData: any) => {
         );
 
         try {
-            const respData = await axiosInstance.get(endpoints.getAccountId);
+            const respData = await axios.get("api?email=" + formData.email + "&apiKey=" + formData.apiKey);
             apis = apis.map((api, i) =>
                 i === index
                     ? { ...api, step1: true, }
@@ -44,7 +44,7 @@ export const getAccountID = (domain: string, index: number, formData: any) => {
                     : api
             );
             console.log("error", error);
-            await dispatch(updateDns({ apisStatus: apis }));
+            // await dispatch(updateDns({ apisStatus: apis }));
         }
     };
 };
@@ -55,12 +55,16 @@ export const toAddZone = (formData: any, index: number, domain: string) => {
         let apis = [...apisStatus];
         let postData = {
             "name": domain.trim(),
-            "jump_start": true
+            "jump_start": true,
+            "email": formData.email,
+            "apiKey": formData.apiKey,
+            "endpoint": endpoints.addZone
         };
 
         try {
-            const respData = await axiosInstance.post(endpoints.addZone, postData);
+            const respData = await axios.post("api", postData); //endpoints.addZone
             let result = respData.data.result;
+
             apis = apis.map((api, i) =>
                 i === index
                     ? { ...api, step2: true, name_servers: result.name_servers }
@@ -85,17 +89,19 @@ export const toAddRecordForZone = (accountID: any, formData: any, index: number)
     return async (dispatch: any, getState: any) => {
         let { apisStatus } = getState().dnsSlice;
         let apis = [...apisStatus];
+        let url = endpoints.addZone + "/" + accountID + "/dns_records";
         let postData = {
             "type": "A",
             "name": "www",
             "content": formData.ip,
             "ttl": 3600,
-            "proxied": formData.proxied
+            "proxied": formData.proxied,
+            "endpoint": endpoints.addZone + "/" + accountID + "/dns_records",
+            "email": formData.email,
+            "apiKey": formData.apiKey
         };
-        let url = endpoints.addZone + "/" + accountID + "/dns_records";
-
         try {
-            const respData = await axiosInstance.post(url, postData);
+            const respData = await axios.post("api", postData);
             apis = apis.map((api, i) =>
                 i === index
                     ? { ...api, step3: true }
@@ -128,63 +134,73 @@ export const toAddRecordForZone = (accountID: any, formData: any, index: number)
     };
 };
 export const deleteOldDns = () => {
-    return (dispatch: any, getState: any) => {
-        const { zoneId, dns_record_id } = getState().dnsSlice;
-        api.deleteApiCall(
-            endpoints.addZone + `/${zoneId}` + "/dns_record_id/" + `/${dns_record_id}`,
-            ``,
-            (respData: any) => {
-                console.log("deleteOldDns succsss", respData)
-            },
-            (error: any) => {
-                console.log("deleteOldDns error", error)
+    return async (dispatch: any, getState: any) => {
+        const { zoneId, dns_record_id, formData } = getState().dnsSlice;
+        try {
+            let data = {
+                headers: {},
+                data: {
+                    "endpoint": endpoints.addZone + `/${zoneId}` + "/dns_record_id/" + `/${dns_record_id}`,
+                    "email": formData.email,
+                    "apiKey": formData.apiKey
+                }
             }
-        );
+            const respData = await axios.delete("api", data);
+        } catch (error: any) {
+            console.log("error", error);
+        }
     };
 };
 
 export const clearCache = () => {
-    return (dispatch: any, getState: any) => {
-        const { zoneId, totalDomains } = getState().dnsSlice;
-        api.postApiCall(
-            endpoints.addZone + `/${zoneId}` + "/purge_cache",
-            { hosts: totalDomains },
-            (respData: any) => {
-                console.log("clearCache succsss", respData)
-            },
-            (error: any) => {
-                console.log("clearCache error", error)
-            }
-        );
+    return async (dispatch: any, getState: any) => {
+        const { zoneId, totalDomains, formData } = getState().dnsSlice;
+        try {
+            let postData = {
+                "hosts": totalDomains,
+                "endpoints": endpoints.addZone + `/${zoneId}` + "/purge_cache",
+                "email": formData.email,
+                "apiKey": formData.apiKey
+            };
+            const respData = await axios.post("api", postData);
+        } catch (error: any) {
+            console.log("error", error);
+
+        }
     };
 };
 export const disabledIPv6 = () => {
-    return (dispatch: any, getState: any) => {
-        const { zoneId } = getState().dnsSlice;
-        api.patchApiCall(
-            endpoints.addZone + `/${zoneId}` + "/settings/ipv6",
-            { value: "off" },
-            (respData: any) => {
-                console.log("disabledIPv6 succsss", respData)
-            },
-            (error: any) => {
-                console.log("disabledIPv6 error", error)
-            }
-        );
+    return async (dispatch: any, getState: any) => {
+        const { zoneId, formData } = getState().dnsSlice;
+        try {
+            let postData = {
+                "value": "off",
+                "endpoints": endpoints.addZone + `/${zoneId}` + "/settings/ipv6",
+                "email": formData.email,
+                "apiKey": formData.apiKey
+            };
+            const respData = await axios.patch("api", postData);
+        } catch (error: any) {
+            console.log("error", error);
+
+        }
     };
 };
 export const alwaysUseHttp = () => {
-    return (dispatch: any, getState: any) => {
-        const { zoneId } = getState().dnsSlice;
-        api.patchApiCall(
-            endpoints.addZone + `/${zoneId}` + "/settings/always_use_https",
-            { value: "off" },
-            (respData: any) => {
-                console.log("alwaysUseHttp succsss", respData)
-            },
-            (error: any) => {
-                console.log("alwaysUseHttp error", error)
-            }
-        );
+    return async (dispatch: any, getState: any) => {
+        const { zoneId, formData } = getState().dnsSlice;
+        try {
+            let postData = {
+                "value": "off",
+                "endpoints": endpoints.addZone + `/${zoneId}` + "/settings/always_use_https",
+                "email": formData.email,
+                "apiKey": formData.apiKey
+            };
+            const respData = await axios.patch("api", postData);
+        } catch (error: any) {
+            console.log("error", error);
+
+        }
+
     };
 };
