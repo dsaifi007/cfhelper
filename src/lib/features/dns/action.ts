@@ -140,7 +140,7 @@ export const deleteOldDns = () => {
             let data = {
                 headers: {},
                 data: {
-                    "endpoint": endpoints.addZone + `/${zoneId}` + "/dns_record_id/" + `/${dns_record_id}`,
+                    "endpoint": endpoints.addZone + `/${zoneId}` + "/dns_record_id/" + `${dns_record_id}`,
                     "email": formData.email,
                     "apiKey": formData.apiKey
                 }

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 
-const baseURL = 'https://api.cloudflare.com/client/v4/accounts/';
+const baseURL = 'https://api.cloudflare.com/client/v4/';
 
 export async function OPTIONS() {
     const headers = {
@@ -22,16 +22,19 @@ export async function POST(request: NextRequest) {
         let postData = await request.json();
         //const { email: emails, apiKey: apiKeys } = postData;
         let baseUrl = baseURL + postData.endpoint;
+        console.log("baseUrl",baseUrl);
+
         const { email, apiKey, endpoint, ...rest } = postData;
+         console.log("rest",rest,postData.email,postData.apiKey);
         const response = await axios.post(baseUrl, rest, {
             headers: {
                 'X-Auth-Email': postData.email,
-                'X-Auth-Key': postData.apiKeys,
+                'X-Auth-Key': postData.apiKey,
                 'Content-Type': 'application/json',
             },
         }).then((res: any) => res).catch(async (err: any) => {
             throw new Error(`Request failed with status ${err}`);
-        });;
+        });
         return NextResponse.json(response.data);
     } catch (error: any) {
         console.error('Error fetching data from Cloudflare:', error.message);
@@ -48,7 +51,7 @@ export async function PATCH(request: NextRequest) {
         const response = await axios.post(baseUrl, rest, {
             headers: {
                 'X-Auth-Email': postData.email,
-                'X-Auth-Key': postData.apiKeys,
+                'X-Auth-Key': postData.apiKey,
                 'Content-Type': 'application/json',
             },
         }).then((res: any) => res).catch(async (err: any) => {
@@ -97,7 +100,7 @@ export async function DELETE(request: NextRequest) {
         //   const { email, apiKey, endpoint, ...rest } = postData;
         const headers = {
             'X-Auth-Email': postData.email,
-            'X-Auth-Key': postData.apiKeys,
+            'X-Auth-Key': postData.apiKey,
             'Content-Type': 'application/json',
         }
         const response = await axios.delete(baseUrl, { headers: headers }).then((res: any) => res).catch(async (err: any) => {
