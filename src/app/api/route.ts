@@ -17,29 +17,47 @@ export async function OPTIONS() {
 
 // Handle POST requests
 export async function POST(request: NextRequest) {
+        try {
+            let postData = await request.json();
+            let baseUrl = baseURL + postData.endpoint;
 
-    try {
-        let postData = await request.json();
-        //const { email: emails, apiKey: apiKeys } = postData;
-        let baseUrl = baseURL + postData.endpoint;
-        console.log("baseUrl",baseUrl);
+            const { email, apiKey, endpoint, ...rest } = postData;
 
-        const { email, apiKey, endpoint, ...rest } = postData;
-         console.log("rest",rest,postData.email,postData.apiKey);
-        const response = await axios.post(baseUrl, rest, {
-            headers: {
-                'X-Auth-Email': postData.email,
-                'X-Auth-Key': postData.apiKey,
-                'Content-Type': 'application/json',
-            },
-        }).then((res: any) => res).catch(async (err: any) => {
-            throw new Error(`Request failed with status ${err}`);
-        });
-        return NextResponse.json(response.data);
-    } catch (error: any) {
-        console.error('Error fetching data from Cloudflare:', error.message);
-        return NextResponse.json({ error: error.message, response: error }, { status: error.response?.status || 500 });
-    }
+            const response = await axios.post(baseUrl, rest, {
+                headers: {
+                    'X-Auth-Email': email,
+                    'X-Auth-Key': apiKey,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            // Assuming response.data contains your API response
+            return NextResponse.json(response.data);
+        } catch (error:any) {
+
+            if (error.response && error.response.data && error.response.data.errors) {
+                const { errors } = error.response.data;
+                const errorMessage = errors.map((err:any) => ({
+                    code: err.code,
+                    message: err.message,
+                }));
+
+                return NextResponse.json({
+                    success: false,
+                    errors: errorMessage,
+                    messages: [],
+                    result: null,
+                });
+            }
+
+            // Default error response
+            return NextResponse.json({
+                success: false,
+                errors: [{ code: error.response?.status, message: error.message }],
+                messages: [],
+                result: null,
+            });
+        }
 }
 export async function PATCH(request: NextRequest) {
 
@@ -54,13 +72,34 @@ export async function PATCH(request: NextRequest) {
                 'X-Auth-Key': postData.apiKey,
                 'Content-Type': 'application/json',
             },
-        }).then((res: any) => res).catch(async (err: any) => {
-            throw new Error(`Request failed with status ${err}`);
-        });;
+        });
+        // .then((res: any) => res).catch(async (err: any) => {
+        //     throw new Error(`Request failed with status ${err}`);
+        // });
         return NextResponse.json(response.data);
     } catch (error: any) {
-        console.error('Error fetching data from Cloudflare:', error.message);
-        return NextResponse.json({ error: error.message, response: error }, { status: error.response?.status || 500 });
+      if (error.response && error.response.data && error.response.data.errors) {
+            const { errors } = error.response.data;
+            const errorMessage = errors.map((err:any) => ({
+                code: err.code,
+                message: err.message,
+            }));
+
+            return NextResponse.json({
+                success: false,
+                errors: errorMessage,
+                messages: [],
+                result: null,
+            });
+        }
+
+        // Default error response
+        return NextResponse.json({
+            success: false,
+            errors: [{ code: error.response?.status, message: error.message }],
+            messages: [],
+            result: null,
+        });
     }
 }
 
@@ -81,13 +120,31 @@ export async function GET(request: NextRequest) {
                 'X-Auth-Key': apiKey,
                 'Content-Type': 'application/json',
             }
-        }).then((res: any) => res).catch(async (err: any) => {
-            throw new Error(`Request failed with status ${err}`);
         });
         return NextResponse.json(response.data);
     } catch (error: any) {
-        console.error('Error fetching data from Cloudflare:', error.message);
-        return NextResponse.json({ error: error.message, response: error.response?.data }, { status: error.response?.status || 500 });
+        if (error.response && error.response.data && error.response.data.errors) {
+            const { errors } = error.response.data;
+            const errorMessage = errors.map((err:any) => ({
+                code: err.code,
+                message: err.message,
+            }));
+
+            return NextResponse.json({
+                success: false,
+                errors: errorMessage,
+                messages: [],
+                result: null,
+            });
+        }
+
+        // Default error response
+        return NextResponse.json({
+            success: false,
+            errors: [{ code: error.response?.status, message: error.message }],
+            messages: [],
+            result: null,
+        });
     }
 }
 
@@ -103,12 +160,30 @@ export async function DELETE(request: NextRequest) {
             'X-Auth-Key': postData.apiKey,
             'Content-Type': 'application/json',
         }
-        const response = await axios.delete(baseUrl, { headers: headers }).then((res: any) => res).catch(async (err: any) => {
-            throw new Error(`Request failed with status ${err}`);
-        });;
+        const response = await axios.delete(baseUrl, { headers: headers });
         return NextResponse.json(response.data);
     } catch (error: any) {
-        console.error('Error fetching data from Cloudflare:', error.message);
-        return NextResponse.json({ error: error.message, response: error }, { status: error.response?.status || 500 });
+       if (error.response && error.response.data && error.response.data.errors) {
+            const { errors } = error.response.data;
+            const errorMessage = errors.map((err:any) => ({
+                code: err.code,
+                message: err.message,
+            }));
+
+            return NextResponse.json({
+                success: false,
+                errors: errorMessage,
+                messages: [],
+                result: null,
+            });
+        }
+
+        // Default error response
+        return NextResponse.json({
+            success: false,
+            errors: [{ code: error.response?.status, message: error.message }],
+            messages: [],
+            result: null,
+        });
     }
 }
