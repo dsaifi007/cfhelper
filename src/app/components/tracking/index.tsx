@@ -46,9 +46,11 @@ const ProgressDialog = ({ open, onClose }: any) => {
       <DialogContent dividers>
         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
           <Typography variant="h6">
+         
             {apisStatus.length == 0
               ? "Please wait while api is in progress"
-              : (100 / totalDomains.length) * apisStatus.length + "% Completed"}
+              : (100 / totalDomains.length) * apisStatus.length + "% Completed"
+          }
           </Typography>
         </Box>
         <Box mb={2}>
@@ -75,13 +77,11 @@ const ProgressDialog = ({ open, onClose }: any) => {
                   <ListItem>
                     <ListItemText primary={`create zone ${v}`} />
                     <Typography variant="body2" sx={{ color: "green" }}>
-                      {apisStatus[i]?.step1 == undefined ? (
-                        PLEASE_WAIT_TEXT
-                      ) : apisStatus[i]?.step1 ? (
+                      { apisStatus[i]?.step1 ? (
                         <DoneOutlinedIcon color="success" />
                       ) : (
-                        <ClearOutlinedIcon color="error" />
-                      )}
+                        <><ClearOutlinedIcon color="error" />{apisStatus.length > 0 && apisStatus[i].message}</>
+                      ) }
                     </Typography>
                   </ListItem>
                 </Box>
@@ -95,13 +95,11 @@ const ProgressDialog = ({ open, onClose }: any) => {
                   <ListItem>
                     <ListItemText primary={`create DNS record ${v}`} />
                     <Typography variant="body2" sx={{ color: "green" }}>
-                      {apisStatus[i]?.step1 == undefined ? (
-                        PLEASE_WAIT_TEXT
-                      ) : apisStatus[i]?.step1 ? (
+                      { apisStatus[i]?.step1 ? (
                         <DoneOutlinedIcon color="success" />
                       ) : (
-                        <ClearOutlinedIcon color="error" />
-                      )}
+                        <><ClearOutlinedIcon color="error" />{apisStatus[i]?.message}</>
+                      )  }
                     </Typography>
                   </ListItem>
                 </Box>
@@ -115,13 +113,11 @@ const ProgressDialog = ({ open, onClose }: any) => {
                   <ListItem>
                     <ListItemText primary={"create DNS record www"} />
                     <Typography variant="body2" sx={{ color: "green" }}>
-                      {apisStatus[i]?.step2 == undefined ? (
-                        PLEASE_WAIT_TEXT
-                      ) : apisStatus[i]?.step2 ? (
+                      { apisStatus[i]?.step2 ? (
                         <DoneOutlinedIcon color="success" />
                       ) : (
-                        <ClearOutlinedIcon color="error" />
-                      )}
+                        <><ClearOutlinedIcon color="error" />{apisStatus[i]?.message}</>
+                      ) }
                     </Typography>
                   </ListItem>
                 </Box>
@@ -135,7 +131,7 @@ const ProgressDialog = ({ open, onClose }: any) => {
                   <ListItem>
                     <ListItemText primary={"ipv6 off"} />
                     <Typography variant="body2" sx={{ color: "green" }}>
-                      {apisStatus[i]?.proxied ? (
+                      { apisStatus[i]?.proxied ? (
                         <DoneOutlinedIcon color="success" />
                       ) : (
                         <ClearOutlinedIcon color="error" />
@@ -152,10 +148,8 @@ const ProgressDialog = ({ open, onClose }: any) => {
                 >
                   <ListItem>
                     <ListItemText
-                      primary={`NS: ${
-                        apisStatus[i]?.name_servers?.length > 0
-                          ? apisStatus[i]?.name_servers?.toString()
-                          : PLEASE_WAIT_TEXT
+                      primary={`NS: ${ apisStatus[i]?.step2 ?  apisStatus[i]?.name_servers?.toString()
+                          : apisStatus[i]?.message
                       } `}
                     />
                     <Typography
