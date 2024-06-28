@@ -7,24 +7,24 @@ import { PLEASE_WAIT_TEXT } from "@/utils/constant";
 import axios from "axios";
 import axiosInstance from "@/utils/axios.instance";
 
-export const handleDomains = (domains, values) => {
-  return async (dispatch) => {
-    const apis = domains.map(domain => ({ domainName: domain }));
+export const handleDomains = (domains:any, values:any) => {
+  return async (dispatch:any) => {
+    const apis = domains.map((domain:any) => ({ domainName: domain }));
     for (let index = 0; index < domains.length; index++) {
       await dispatch(getAccountID(domains[index], index, values, apis));
     }
   };
 };
 
-const handleError = (error) => {
+const handleError = (error:any) => {
   return error?.data?.errors?.length > 0
-    ? error?.data?.errors.map(v => v.message).toString()
+    ? error?.data?.errors.map((v:any) => v.message).toString()
     : "Unknown error";
 };
 
-export const getAccountID = (domain, index, formData, apis) => {
-  return async (dispatch, getState) => {
-    apis = apis.map((api, i) =>
+export const getAccountID = (domain:any, index:any, formData:any, apis:any) => {
+  return async (dispatch:any, getState:any) => {
+    apis = apis.map((api:any, i:any) =>
       i === index
         ? { ...api, domainName: domain, step1: false, proxied: formData.proxied, message: "" }
         : api
@@ -49,8 +49,8 @@ export const getAccountID = (domain, index, formData, apis) => {
   };
 };
 
-export const toAddZone = (formData, index, domain, apis) => {
-  return async (dispatch) => {
+export const toAddZone = (formData:any, index:any, domain:any, apis:any) => {
+  return async (dispatch:any) => {
     const postData = {
       name: domain.trim(),
       jump_start: true,
@@ -77,8 +77,8 @@ export const toAddZone = (formData, index, domain, apis) => {
   };
 };
 
-export const toAddRecordForZone = (accountID, formData, index, apis) => {
-  return async (dispatch) => {
+export const toAddRecordForZone = (accountID:any, formData:any, index:any, apis:any) => {
+  return async (dispatch:any) => {
     const url = `${endpoints.addZone}/${accountID}/dns_records`;
     const postData = {
       type: "A",
@@ -115,7 +115,7 @@ export const toAddRecordForZone = (accountID, formData, index, apis) => {
 };
 
 export const deleteOldDns = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch:any, getState:any) => {
     const { zoneId, dns_record_id, formData } = getState().dnsSlice;
     try {
       const data = {
@@ -134,7 +134,7 @@ export const deleteOldDns = () => {
 };
 
 export const clearCache = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch:any, getState:any) => {
     const { zoneId, totalDomains, formData } = getState().dnsSlice;
     try {
       const postData = {
@@ -151,7 +151,7 @@ export const clearCache = () => {
 };
 
 export const disabledIPv6 = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch:any, getState:any) => {
     const { zoneId, formData } = getState().dnsSlice;
     try {
       const postData = {
@@ -168,7 +168,7 @@ export const disabledIPv6 = () => {
 };
 
 export const alwaysUseHttp = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch:any, getState:any) => {
     const { zoneId, formData } = getState().dnsSlice;
     try {
       const postData = {
