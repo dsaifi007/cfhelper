@@ -14,7 +14,7 @@ const initialState: dnsState = {
     accountID: "",
     zoneId: "",
     formData: {},
-    apisStatus: [],
+    apisStatus: [{}],
     totalDomains: []
 };
 

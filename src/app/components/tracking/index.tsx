@@ -80,7 +80,7 @@ const ProgressDialog = ({ open, onClose }: any) => {
                       { apisStatus[i]?.step1 ? (
                         <DoneOutlinedIcon color="success" />
                       ) : (
-                        <><ClearOutlinedIcon color="error" />{apisStatus.length > 0 && apisStatus[i].message}</>
+                        <><ClearOutlinedIcon color="error" />{apisStatus.length > 0 && apisStatus[i]?.message}</>
                       ) }
                     </Typography>
                   </ListItem>

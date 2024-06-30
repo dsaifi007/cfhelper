@@ -8,10 +8,12 @@ import axios from "axios";
 import axiosInstance from "@/utils/axios.instance";
 
 export const handleDomains = (domains:any, values:any) => {
-  return async (dispatch:any) => {
-    const apis = domains.map((domain:any) => ({ domainName: domain }));
+  return async (dispatch:any, getState:any) => {
+    let { apisStatus } = getState().dnsSlice;
+    const apis = [...apisStatus];
     for (let index = 0; index < domains.length; index++) {
-      await dispatch(getAccountID(domains[index], index, values, apis));
+      console.log("index",index);
+      await dispatch(getAccountID(domains[index], index, values));
     }
   };
 };
@@ -22,35 +24,33 @@ const handleError = (error:any) => {
     : "Unknown error";
 };
 
-export const getAccountID = (domain:any, index:any, formData:any, apis:any) => {
+export const getAccountID = (domain:any, index:any, formData:any) => {
   return async (dispatch:any, getState:any) => {
-    apis = apis.map((api:any, i:any) =>
-      i === index
-        ? { ...api, domainName: domain, step1: false, proxied: formData.proxied, message: "" }
-        : api
-    );
+    let { apisStatus } = getState().dnsSlice;
+   // apis[index] = { ...apis[index], domainName: domain, step1: false, proxied: formData.proxied, message: "",name_servers:[] }
 
     try {
       const respData = await axios.get(`api?email=${formData.email}&apiKey=${formData.apiKey}`);
       const result = respData.data.result;
 
-
+      const apis = [...apisStatus];
       if (respData.data.success == true) {
-        apis[index] = { ...apis[index], step1: true, message: "" };
-        await dispatch(toAddZone(formData, index, domain, apis));
+        apis[index] = {  step1: true, message: "",name_servers:[] };
+        await dispatch(toAddZone(formData, index, domain));
       } else {
         
-        apis[index] = { ...apis[index], step1: false, message: handleError(respData) };
+        apis[index] = {  step1: false, message: handleError(respData),name_servers:[] };
       }
       dispatch(updateDns({ apisStatus: apis }));
     } catch (error) {
-      console.error("Error fetching account ID:", handleError(error));
+      console.error("Error fetching account ID:", error);
     }
   };
 };
 
-export const toAddZone = (formData:any, index:any, domain:any, apis:any) => {
-  return async (dispatch:any) => {
+export const toAddZone = (formData:any, index:any, domain:any) => {
+  return async (dispatch:any, getState:any) => {
+    let { apisStatus } = getState().dnsSlice;
     const postData = {
       name: domain.trim(),
       jump_start: true,
@@ -60,13 +60,14 @@ export const toAddZone = (formData:any, index:any, domain:any, apis:any) => {
     };
 
     try {
+      const apis = [...apisStatus];
       const respData = await axios.post("api", postData);
       const result = respData.data.result;
 
       if (respData.data.success == true) {
-        apis[index] = { ...apis[index], step2: true, name_servers: result.name_servers, message: "" };
+        apis[index] = { ...apis[index], step2: true, name_servers: result.name_servers };
         dispatch(updateDns({ accountID: result.id, apisStatus: apis, zoneId: result.id }));
-        await dispatch(toAddRecordForZone(result.id, formData, index, apis));
+        await dispatch(toAddRecordForZone(result.id, formData, index));
       } else {
         apis[index] = { ...apis[index], step2: false, name_servers: [], message: handleError(respData) };
         dispatch(updateDns({ apisStatus: apis }));
@@ -77,8 +78,9 @@ export const toAddZone = (formData:any, index:any, domain:any, apis:any) => {
   };
 };
 
-export const toAddRecordForZone = (accountID:any, formData:any, index:any, apis:any) => {
-  return async (dispatch:any) => {
+export const toAddRecordForZone = (accountID:any, formData:any, index:any) => {
+  return async (dispatch:any, getState:any) => {
+    let { apisStatus } = getState().dnsSlice;
     const url = `${endpoints.addZone}/${accountID}/dns_records`;
     const postData = {
       type: "A",
@@ -92,6 +94,7 @@ export const toAddRecordForZone = (accountID:any, formData:any, index:any, apis:
     };
 
     try {
+      const apis = [...apisStatus];
       const respData = await axios.post("api", postData);
       if (respData.data.success) {
         apis[index] = { ...apis[index], step3: true, message: "" };
