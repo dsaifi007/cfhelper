@@ -46,11 +46,9 @@ const ProgressDialog = ({ open, onClose }: any) => {
       <DialogContent dividers>
         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
           <Typography variant="h6">
-         
             {apisStatus.length == 0
               ? "Please wait while api is in progress"
-              : (100 / totalDomains.length) * apisStatus.length + "% Completed"
-          }
+              : (100 / totalDomains.length) * apisStatus.length + "% Completed"}
           </Typography>
         </Box>
         <Box mb={2}>
@@ -77,11 +75,14 @@ const ProgressDialog = ({ open, onClose }: any) => {
                   <ListItem>
                     <ListItemText primary={`create zone ${v}`} />
                     <Typography variant="body2" sx={{ color: "green" }}>
-                      { apisStatus[i]?.step1 ? (
+                      {apisStatus[i]?.step1 ? (
                         <DoneOutlinedIcon color="success" />
                       ) : (
-                        <><ClearOutlinedIcon color="error" />{apisStatus.length > 0 && apisStatus[i]?.message}</>
-                      ) }
+                        <>
+                          <ClearOutlinedIcon color="error" />
+                          {apisStatus.length > 0 && apisStatus[i]?.message}
+                        </>
+                      )}
                     </Typography>
                   </ListItem>
                 </Box>
@@ -94,12 +95,18 @@ const ProgressDialog = ({ open, onClose }: any) => {
                 >
                   <ListItem>
                     <ListItemText primary={`create DNS record ${v}`} />
-                    <Typography variant="body2" sx={{ color: "green" }}>
-                      { apisStatus[i]?.step1 ? (
+                    <Typography
+                      variant="body2"
+                      sx={{ color: apisStatus[i]?.step1 ? "green" : "red" }}
+                    >
+                      {apisStatus[i]?.step1 ? (
                         <DoneOutlinedIcon color="success" />
                       ) : (
-                        <><ClearOutlinedIcon color="error" />{apisStatus[i]?.message}</>
-                      )  }
+                        <>
+                          <ClearOutlinedIcon color="error" />
+                          {apisStatus[i]?.message}
+                        </>
+                      )}
                     </Typography>
                   </ListItem>
                 </Box>
@@ -113,32 +120,33 @@ const ProgressDialog = ({ open, onClose }: any) => {
                   <ListItem>
                     <ListItemText primary={"create DNS record www"} />
                     <Typography variant="body2" sx={{ color: "green" }}>
-                      { apisStatus[i]?.step2 ? (
+                      {apisStatus[i]?.step2 ? (
                         <DoneOutlinedIcon color="success" />
                       ) : (
-                        <><ClearOutlinedIcon color="error" />{apisStatus[i]?.message}</>
-                      ) }
-                    </Typography>
-                  </ListItem>
-                </Box>
-                <Box
-                  border={1}
-                  borderColor="grey.300"
-                  borderRadius={2}
-                  mb={1}
-                  p={1}
-                >
-                  <ListItem>
-                    <ListItemText primary={"ipv6 off"} />
-                    <Typography variant="body2" sx={{ color: "green" }}>
-                      { apisStatus[i]?.proxied ? (
-                        <DoneOutlinedIcon color="success" />
-                      ) : (
-                        <ClearOutlinedIcon color="error" />
+                        <>
+                          <ClearOutlinedIcon color="error" />
+                          {apisStatus[i]?.message}
+                        </>
                       )}
                     </Typography>
                   </ListItem>
                 </Box>
+                {apisStatus[i]?.proxied && (
+                  <Box
+                    border={1}
+                    borderColor="grey.300"
+                    borderRadius={2}
+                    mb={1}
+                    p={1}
+                  >
+                    <ListItem>
+                      <ListItemText primary={"ipv6 off"} />
+                      <Typography variant="body2" sx={{ color: "green" }}>
+                        <DoneOutlinedIcon color="success" />
+                      </Typography>
+                    </ListItem>
+                  </Box>
+                )}
                 <Box
                   border={1}
                   borderColor="grey.300"
@@ -148,7 +156,9 @@ const ProgressDialog = ({ open, onClose }: any) => {
                 >
                   <ListItem>
                     <ListItemText
-                      primary={`NS: ${ apisStatus[i]?.step2 ?  apisStatus[i]?.name_servers?.toString()
+                      primary={`NS: ${
+                        apisStatus[i]?.step2
+                          ? apisStatus[i]?.name_servers?.toString()
                           : apisStatus[i]?.message
                       } `}
                     />

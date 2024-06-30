@@ -47,23 +47,23 @@ export default function Home() {
     }
   };
   console.log("data", data);
-  // let initialValue = {
-  //   email: "neelson8826@gmail.com",
-  //   apiKey: "a4be316ee7a00ac0b9e080da7bc3eae745a01", //"27795ac70b1ba3626a4b11049ba8baac64361",
-  //   domains: "www.com",
-  //   ip: "12.12.12.12",
-  //   dns: false,
-  //   proxied: false,
-  //   clearCache: false,
-  //   ipv6: false,
-  //   https: false,
-  // };
+  let initialValue1 = {
+    email: "neelson8826@gmail.com",
+    apiKey: "a4be316ee7a00ac0b9e080da7bc3eae745a01", //"27795ac70b1ba3626a4b11049ba8baac64361",
+    domains: "www.com",
+    ip: "12.12.12.12",
+    dns: false,
+    proxied: false,
+    clearCache: false,
+    ipv6: false,
+    https: false,
+  };
 
   let initialValue = {
-    email: "",
-    apiKey: "", //"27795ac70b1ba3626a4b11049ba8baac64361",
-    domains: "",
-    ip: "",
+    email: "mifipo4963@kinsef.com",
+    apiKey: "d1e9601300cf18aafadf6c8e2fc4ac552bf19", //"27795ac70b1ba3626a4b11049ba8baac64361",
+    domains: "testssss.com",
+    ip: "12.12.12.15",
     dns: false,
     proxied: false,
     clearCache: false,
