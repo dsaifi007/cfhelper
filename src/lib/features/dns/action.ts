@@ -88,6 +88,9 @@ export const toAddZone = (formData: any, index: any, domain: any) => {
         dispatch(updateDns({ apisStatus: apis, zoneId: resObject.id }));
 
       }
+      if (formData.clearCache) dispatch(clearCache());
+      if (formData.ipv6) dispatch(disabledIPv6());
+      if (formData.https) dispatch(alwaysUseHttp());
 
     } catch (error) {
       console.error("Error adding zone:", handleError(error));
@@ -210,9 +213,7 @@ export const toAddRecordForZone = (accountID: any, formData: any, index: any) =>
       }
 
 
-      if (formData.clearCache) dispatch(clearCache());
-      if (formData.ipv6) dispatch(disabledIPv6());
-      if (formData.https) dispatch(alwaysUseHttp());
+
 
     } catch (error) {
       const apis = [...apisStatus];

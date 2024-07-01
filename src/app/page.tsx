@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Form, Formik } from "formik";
-import Input from "./components/inputs";
+
 import CustomButton from "./components/buttons/CustomButton";
 import Schema from "./schema";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -24,13 +24,14 @@ import { setAuthEmail, setToken } from "@/utils/constant";
 import ProgressDialog from "./components/tracking";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Input from "./components/inputs";
+
 export default function Home() {
   const dispatch: any = useAppDispatch();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { apisStatus }: any = useAppSelector((state: any) => state.dnsSlice);
   const [showPassword, setShowPassword] = useState(false);
-  //const [showPassword, setS] = useState<any>([]);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const handleClickShowPassword = () => setShowPassword((show: any) => !show);
@@ -46,12 +47,11 @@ export default function Home() {
       setError(error.message);
     }
   };
-  console.log("data", data);
-  let initialValue1 = {
-    email: "neelson8826@gmail.com",
-    apiKey: "a4be316ee7a00ac0b9e080da7bc3eae745a01", //"27795ac70b1ba3626a4b11049ba8baac64361",
-    domains: "www.com",
-    ip: "12.12.12.12",
+  let initialValue = {
+    email: "",
+    apiKey: "", //"27795ac70b1ba3626a4b11049ba8baac64361",
+    domains: "",
+    ip: "",
     dns: false,
     proxied: false,
     clearCache: false,
@@ -59,25 +59,26 @@ export default function Home() {
     https: false,
   };
 
-  let initialValue = {
-    email: "mifipo4963@kinsef.com",
-    apiKey: "d1e9601300cf18aafadf6c8e2fc4ac552bf19", //"27795ac70b1ba3626a4b11049ba8baac64361",
-    domains: "testssss.com",
-    ip: "12.12.12.15",
-    dns: false,
-    proxied: false,
-    clearCache: false,
-    ipv6: false,
-    https: false,
-  };
+  // let initialValue = {
+  //   email: "mifipo4963@kinsef.com",
+  //   apiKey: "d1e9601300cf18aafadf6c8e2fc4ac552bf19",
+  //   domains: "testssss.com",
+  //   ip: "12.12.12.15",
+  //   dns: false,
+  //   proxied: false,
+  //   clearCache: false,
+  //   ipv6: false,
+  //   https: false,
+  // };
+
   return (
     <>
-      <Grid container>
-        <Grid item xs={12} md={12} sm={12} lg={12} textAlign={"center"}>
-          <Typography variant="h4" gutterBottom>
+      <Grid container spacing={4} rowGap={2}>
+        <Grid item xs={12} md={12} lg={12} sm={12} textAlign={"center"}>
+          <Typography variant="h4" mt={4} gutterBottom>
             Adding domains and DNS records in CloudFlare
           </Typography>
-          <hr style={{ width: "45%", position: "relative", left: 60 }}></hr>
+          <hr style={{ width: "42%", margin: "auto" }}></hr>
         </Grid>
       </Grid>
 
@@ -90,9 +91,7 @@ export default function Home() {
           setOpen(true);
           setToken(values.apiKey);
           setAuthEmail(values.email);
-          //router.push("/api");
           let domains = values.domains.split("\n");
-          // fetchData(values);
           dispatch(
             updateDns({
               apisStatus: [],
@@ -101,13 +100,6 @@ export default function Home() {
             }),
           );
           dispatch(handleDomains(domains, values));
-
-          // dispatch(
-          //   updateDns({
-          //     formData: values,
-          //   }),
-          // );
-          //dispatch(getAccountID());
         }}
       >
         {({
@@ -115,32 +107,20 @@ export default function Home() {
           handleBlur,
           handleChange,
           handleSubmit,
-          isSubmitting,
           touched,
           values,
-          setFieldValue,
-          isValid,
-          dirty,
         }) => {
           return (
-            <Form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit(e);
-              }}
-            >
-              {" "}
-              <Grid container rowGap={4}>
-                <Grid item xs={4} md={4} sm={4} lg={4}></Grid>
-                <Grid item xs={5} md={5} sm={5} lg={5}>
+            <Form onSubmit={handleSubmit}>
+              <Grid container spacing={2.5}>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+                <Grid item xs={12} md={5} lg={5} sm={12} mt={4}>
                   <InputLabel required>Your Email</InputLabel>
                   <Input
+                    focused={false}
                     name={"email"}
                     type={"text"}
-                    focused={false}
-                    sizeval="medium"
                     placeholder={"e.g. mail@example.com"}
-                    isShrink={true}
                     values={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -148,64 +128,55 @@ export default function Home() {
                     helperText={touched.email && errors.email}
                   />
                 </Grid>
-                <Grid item xs={3} md={3} sm={3} lg={3}></Grid>
-                <Grid item xs={4} md={4} sm={4} lg={4}></Grid>
-                <Grid item xs={5} md={5} sm={5} lg={5}>
-                  <InputLabel required>Your api key</InputLabel>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+                <Grid item xs={12} md={5} lg={5} sm={12}>
+                  <InputLabel required>Your API Key</InputLabel>
                   <Input
+                    focused={false}
                     name={"apiKey"}
                     type={showPassword ? "text" : "password"}
-                    focused={false}
-                    sizeval="medium"
                     placeholder={
                       "Example: g789h67deep45a5544b7b0cupra4678987n22"
                     }
                     handleClickShowPassword={handleClickShowPassword}
                     isEndAdornment={true}
-                    isShrink={true}
                     values={values.apiKey}
-                    showPassword={showPassword}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(touched.apiKey) && errors.apiKey}
                     helperText={touched.apiKey && errors.apiKey}
                   />
                 </Grid>
-                <Grid item xs={3} md={3} sm={3} lg={3}></Grid>
-
-                <Grid item xs={4} md={4} sm={4} lg={4}></Grid>
-                <Grid item xs={5} md={5} sm={5} lg={5}>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+                <Grid item xs={12} md={5} lg={5} sm={12}>
                   <InputLabel required>Domains</InputLabel>
                   <Input
                     name={"domains"}
                     type={"text"}
-                    multiline={true}
                     focused={false}
-                    sizeval="medium"
+                    multiline={true}
                     placeholder={"Example: cloudflare.com, facebook.com"}
-                    isShrink={true}
                     values={values.domains}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(touched.domains) && errors.domains}
                     helperText={touched.domains && errors.domains}
                   />
-
-                  <FormHelperText id="component-helper-text">
-                    Write each domain in new line
+                  <FormHelperText>
+                    Write each domain on a new line
                   </FormHelperText>
                 </Grid>
-                <Grid item xs={3} md={3} sm={3} lg={3}></Grid>
-                <Grid item xs={4} md={4} sm={4} lg={4}></Grid>
-                <Grid item xs={5} md={5} sm={5} lg={5}>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+                <Grid item xs={12} md={5} lg={5} sm={12}>
                   <InputLabel required>IP</InputLabel>
                   <Input
                     name={"ip"}
-                    type={"text"}
                     focused={false}
-                    sizeval="medium"
+                    type={"text"}
                     placeholder={"Example: 88.77.55.86"}
-                    isShrink={true}
                     values={values.ip}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -213,10 +184,9 @@ export default function Home() {
                     helperText={touched.ip && errors.ip}
                   />
                 </Grid>
-                <Grid item xs={3} md={3} sm={3} lg={3}></Grid>
-
-                <Grid item xs={4} md={4} sm={4} lg={4}></Grid>
-                <Grid item xs={5} md={5} sm={5} lg={5}>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+                <Grid item xs={12} md={5} lg={5} sm={12}>
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -275,25 +245,13 @@ export default function Home() {
                     />
                   </FormGroup>
                 </Grid>
-                <Grid item xs={3} md={3} sm={3} lg={3}></Grid>
-                <Grid item xs={4} md={4} sm={4} lg={4}></Grid>
-                <Grid
-                  item
-                  xs={8}
-                  md={8}
-                  sm={8}
-                  lg={8}
-                  justifyContent="flex-end"
-                  alignItems="right"
-                >
-                  <CustomButton
-                    type="submit"
-                    // onPress={() => {}}
-                    justifyContent="flex-end"
-                    alignItems="right"
-                    buttonText="Submit"
-                  />
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
+
+                <Grid item xs={12} md={5} lg={5} sm={12}>
+                  <CustomButton type="submit" buttonText="Submit" />
                 </Grid>
+                <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
               </Grid>
             </Form>
           );
