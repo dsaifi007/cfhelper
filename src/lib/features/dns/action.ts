@@ -251,7 +251,7 @@ export const clearCache = () => {
     try {
       const postData = {
         hosts: totalDomains,
-        endpoints: `${endpoints.addZone}/${zoneId}/purge_cache`,
+        endpoint: `${endpoints.addZone}/${zoneId}/purge_cache`,
         email: formData.email,
         apiKey: formData.apiKey
       };
@@ -268,7 +268,7 @@ export const disabledIPv6 = () => {
     try {
       const postData = {
         value: "off",
-        endpoints: `${endpoints.addZone}/${zoneId}/settings/ipv6`,
+        endpoint: `${endpoints.addZone}/${zoneId}/settings/ipv6`,
         email: formData.email,
         apiKey: formData.apiKey
       };
@@ -285,7 +285,7 @@ export const alwaysUseHttp = () => {
     try {
       const postData = {
         value: "off",
-        endpoints: `${endpoints.addZone}/${zoneId}/settings/always_use_https`,
+        endpoint: `${endpoints.addZone}/${zoneId}/settings/always_use_https`,
         email: formData.email,
         apiKey: formData.apiKey
       };
