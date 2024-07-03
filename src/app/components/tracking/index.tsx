@@ -22,7 +22,7 @@ import { useSelector } from "react-redux";
 import { PLEASE_WAIT_TEXT } from "@/utils/constant";
 
 const ProgressDialog = ({ open, onClose }: any) => {
-  const { apisStatus, totalDomains } = useSelector(
+  const { apisStatus, totalDomains, responseCount } = useSelector(
     (state: any) => state.dnsSlice,
   );
 
@@ -46,15 +46,19 @@ const ProgressDialog = ({ open, onClose }: any) => {
       <DialogContent dividers>
         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
           <Typography variant="h6">
-            {apisStatus.length == 0
-              ? "Please wait while api is in progress"
-              : (100 / totalDomains.length) * apisStatus.length + "% Completed"}
+            {responseCount == 0
+              ? "Please wait..."
+              : (100 / totalDomains.length) * responseCount + "% Completed"}
           </Typography>
         </Box>
         <Box mb={2}>
           <LinearProgress
             variant="determinate"
-            value={(100 / totalDomains.length) * apisStatus.length}
+            value={
+              responseCount > 0
+                ? (100 / totalDomains.length) * responseCount
+                : 0
+            }
             sx={{ height: 15, borderRadius: 5 }}
           />
         </Box>

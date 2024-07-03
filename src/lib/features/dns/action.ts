@@ -19,7 +19,6 @@ export const handleDomains = (domains: any, values: any) => {
 };
 
 const handleError = (error: any) => {
-
   return error?.data?.errors?.length > 0
     ? error?.data?.errors.map((v: any) => v.message).toString()
     : "Unknown error";
@@ -31,10 +30,12 @@ export const getAccountID = (domain: any, index: any, formData: any) => {
     // apis[index] = { ...apis[index], domainName: domain, step1: false, proxied: formData.proxied, message: "",name_servers:[] }
 
     try {
-      const respData = await axios.get(`api?email=${formData.email}&apiKey=${formData.apiKey}&endpoint=accounts`);
+      const respData = await axios.get(`api?email=${formData.email}&apiKey=${formData.apiKey}&endpoint=zones`);
       const result = respData.data.result;
 
       const apis = [...apisStatus];
+
+
       if (respData.data.success == true) {
         apis[index] = { ...apis[index], step1: true, name_servers: [] };
         dispatch(updateDns({ apisStatus: apis }));
@@ -52,7 +53,7 @@ export const getAccountID = (domain: any, index: any, formData: any) => {
 
 export const toAddZone = (formData: any, index: any, domain: any) => {
   return async (dispatch: any, getState: any) => {
-    let { apisStatus } = getState().dnsSlice;
+    let { apisStatus, responseCount } = getState().dnsSlice;
     const postData = {
       name: domain.trim(),
       jump_start: true,
@@ -89,8 +90,10 @@ export const toAddZone = (formData: any, index: any, domain: any) => {
 
       }
       if (formData.clearCache) dispatch(clearCache());
-      if (formData.ipv6) dispatch(disabledIPv6());
-      if (formData.https) dispatch(alwaysUseHttp());
+      await dispatch(disabledIPv6());
+      await dispatch(alwaysUseHttp());
+      dispatch(updateDns({ responseCount: responseCount + 1 }));
+
 
     } catch (error) {
       console.error("Error adding zone:", handleError(error));
@@ -267,7 +270,7 @@ export const disabledIPv6 = () => {
     const { zoneId, formData } = getState().dnsSlice;
     try {
       const postData = {
-        value: "off",
+        value: formData.proxied ? "on" : "off",
         endpoint: `${endpoints.addZone}/${zoneId}/settings/ipv6`,
         email: formData.email,
         apiKey: formData.apiKey
@@ -284,7 +287,7 @@ export const alwaysUseHttp = () => {
     const { zoneId, formData } = getState().dnsSlice;
     try {
       const postData = {
-        value: "off",
+        value: formData.https ? 'on' : "off",
         endpoint: `${endpoints.addZone}/${zoneId}/settings/always_use_https`,
         email: formData.email,
         apiKey: formData.apiKey
