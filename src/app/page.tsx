@@ -157,7 +157,7 @@ export default function Home() {
                     type={"text"}
                     focused={false}
                     multiline={true}
-                    placeholder={"Example: cloudflare.com, facebook.com"}
+                    placeholder={"Example: \ncloudflare.com\nfacebook.com"}
                     values={values.domains}
                     onChange={handleChange}
                     onBlur={handleBlur}

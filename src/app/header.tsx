@@ -94,7 +94,7 @@ const Header = () => {
         >
           <LightModeIcon fontSize="large" />
           <Switch {...label} defaultChecked color="default" />
-          <Chip
+          {/* <Chip
             size="medium"
             sx={{
               borderColor: "white",
@@ -108,7 +108,7 @@ const Header = () => {
             onClick={() => navigation.push("/comingsoon")}
             icon={<DiamondIcon style={{ color: "white" }} />}
             label={<b>PRO</b>}
-          />
+          /> */}
         </Stack>
       </Grid>
 
@@ -128,11 +128,12 @@ const Header = () => {
             onClick={handleClick}
             sx={{ color: "black" }}
           >
-            {open ? (
+            <Typography fontSize={22}>ENG</Typography>&emsp;
+            {/* {open ? (
               <KeyboardArrowDownIcon fontSize="large" />
             ) : (
               <KeyboardArrowUpIcon fontSize="large" />
-            )}
+            )} */}
             <Image
               src={"/icons/lang2.png"}
               alt="language"
@@ -181,7 +182,7 @@ const Header = () => {
             onClick={() => navigation.push("/comingsoon")}
             gutterBottom
           >
-            Login
+            Log In
           </Typography>
           <CustomButton
             className="showHandCursor"

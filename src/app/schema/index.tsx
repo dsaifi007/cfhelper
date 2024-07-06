@@ -26,8 +26,11 @@ const AddDomainForm = (e: any) => {
     //.matches(DOMAIN_REGEX, "Please provide a valid domain"),
     ip: Yup.string()
       .trim()
-      .required()
-      .matches(IPADDRESS_REGEX, "Please enter the IP address of the server"),
+      .required("Please enter the IP address of the server")
+      .matches(
+        IPADDRESS_REGEX,
+        "Please enter the Valid IP address of the server",
+      ),
   });
 };
 const PayformForm = (e: any) => {
