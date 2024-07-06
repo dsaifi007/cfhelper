@@ -112,6 +112,9 @@ export async function GET(request: NextRequest) {
 
         //endpoint
 
+        console.log("email", email);
+        console.log("apikey", apiKey, baseURL + endpoint);
+
         if (!email || !apiKey) {
             return NextResponse.json({ error: 'Email and API Key are required' }, { status: 400 });
         }
