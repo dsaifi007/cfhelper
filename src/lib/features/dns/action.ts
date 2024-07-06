@@ -7,7 +7,6 @@ export const handleDomains = (domains: any, values: any) => {
     let { apisStatus } = getState().dnsSlice;
     const apis = [...apisStatus];
     for (let index = 0; index < domains.length; index++) {
-      console.log("index", index);
       await dispatch(getAccountID(domains[index], index, values));
     }
   };
@@ -265,7 +264,7 @@ export const disabledIPv6 = () => {
     const { zoneId, formData } = getState().dnsSlice;
     try {
       const postData = {
-        value: formData.proxied ? "on" : "off",
+        value: !formData.proxied ? "on" : "off",
         endpoint: `${endpoints.addZone}/${zoneId}/settings/ipv6`,
         email: formData.email,
         apiKey: formData.apiKey
@@ -282,7 +281,7 @@ export const alwaysUseHttp = () => {
     const { zoneId, formData } = getState().dnsSlice;
     try {
       const postData = {
-        value: formData.https ? 'on' : "off",
+        value: !formData.https ? 'on' : "off",
         endpoint: `${endpoints.addZone}/${zoneId}/settings/always_use_https`,
         email: formData.email,
         apiKey: formData.apiKey

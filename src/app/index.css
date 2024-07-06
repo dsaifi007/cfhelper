@@ -4,3 +4,6 @@
 .mui-8zt0fu-MuiFormHelperText-root{
     margin-left: 0px  !important;
 }
+.showHandCursor {
+    cursor: pointer;
+}

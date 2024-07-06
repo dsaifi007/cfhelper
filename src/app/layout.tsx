@@ -7,7 +7,6 @@ import Toast from "./components/toast";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import theme from "@/theme";
 import { ThemeProvider } from "@mui/material/styles";
-import { useRef } from "react";
 import { Provider } from "react-redux";
 import { store } from "../lib/store";
 import GlobalLoader from "./components/backdrop";

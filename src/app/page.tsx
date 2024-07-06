@@ -176,7 +176,7 @@ export default function Home() {
                     name={"ip"}
                     focused={false}
                     type={"text"}
-                    placeholder={"Example: 88.77.55.86"}
+                    placeholder={"Domains: 88.77.55.86"}
                     values={values.ip}
                     onChange={handleChange}
                     onBlur={handleBlur}

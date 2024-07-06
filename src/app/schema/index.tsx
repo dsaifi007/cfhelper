@@ -2,15 +2,18 @@ import * as Yup from "yup";
 import { DOMAIN_REGEX, IPADDRESS_REGEX } from "../utils/constant";
 const AddDomainForm = (e: any) => {
   return Yup.object().shape({
-    email: Yup.string().email().trim().required("Please provide an email"),
+    email: Yup.string()
+      .email()
+      .trim()
+      .required("Please enter your CloudFlare mail"),
     apiKey: Yup.string()
       .trim()
-      .required("API Key is required")
-      .max(500, "API Key must be at most 500 characters")
-      .min(1, "API Key must be at least 1 characters"),
+      .required("API Global Key is required field”")
+      .max(500, "API Global Key must be at most 500 characters")
+      .min(1, "API Global Key must be at least 1 characters"),
     domains: Yup.string()
       .trim()
-      .required("Domain is required")
+      .required("Domain is required field")
       .test(
         "valid-domains",
         "Please provide valid domains, each starting from a new line",
@@ -24,7 +27,7 @@ const AddDomainForm = (e: any) => {
     ip: Yup.string()
       .trim()
       .required()
-      .matches(IPADDRESS_REGEX, "Please provide a valid IP address"),
+      .matches(IPADDRESS_REGEX, "Please enter the IP address of the server"),
   });
 };
 const PayformForm = (e: any) => {

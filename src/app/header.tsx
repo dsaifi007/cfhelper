@@ -1,31 +1,50 @@
 "use client";
 import { DEFAULT_LANGUAGES, getLanguage, setLanguage } from "@/utils/constant";
-import DiamondIcon from '@mui/icons-material/Diamond';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DiamondIcon from "@mui/icons-material/Diamond";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import LanguageIcon from "@mui/icons-material/Language";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import { Box, Chip, Grid, Menu, MenuItem, Stack, Switch, Typography } from "@mui/material";
-import IconButton from '@mui/material/IconButton';
+
+import {
+  Box,
+  Chip,
+  Grid,
+  Menu,
+  MenuItem,
+  Stack,
+  Switch,
+  Typography,
+} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
+import language from "./icons/language.png";
 import { useState } from "react";
 import CustomButton from "./components/buttons/CustomButton";
+import { useRouter } from "next/navigation";
 const label = { inputProps: { "aria-label": "Color switch demo" } };
 const ITEM_HEIGHT = 48;
 const Header = () => {
-  const [language, setLang] = useState<string>(getLanguage() || "English");
+  const [language, setLang] = useState<string>(getLanguage() || "eng");
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigation = useRouter();
+
   const open = Boolean(anchorEl);
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
-    setLanguage(event.target.value);
+    //setLanguage(event.target.value);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  const changeLanguage = (e: any, locale: string) => {
+    setAnchorEl(null);
+    navigation.push(`/${locale}`);
+  };
+  console.log("language", language);
   return (
-    <Grid container alignItems="center" >
+    <Grid container alignItems="center">
       <Grid item xs={12} md={4} lg={4} sm={12}>
         <Stack
           direction={{ xs: "column", sm: "row" }}
@@ -33,7 +52,13 @@ const Header = () => {
           alignItems="center"
           height={{ xs: "auto", sm: 70 }} // Adjust the height for different screen sizes
         >
-          <Box position="relative" width={130} height={130}>
+          <Box
+            position="relative"
+            width={130}
+            height={130}
+            className="showHandCursor"
+            onClick={() => navigation.push("/")}
+          >
             <Image
               src={"/img/logonew.png"}
               alt="Logo"
@@ -42,10 +67,20 @@ const Header = () => {
               style={{ display: "inline-block" }}
             />
           </Box>
-          <Typography variant="h5" gutterBottom>
+          <Typography
+            variant="h5"
+            className="showHandCursor"
+            onClick={() => navigation.push("/features")}
+            gutterBottom
+          >
             Features
           </Typography>
-          <Typography variant="h5" gutterBottom>
+          <Typography
+            variant="h5"
+            className="showHandCursor"
+            onClick={() => navigation.push("/comingsoon")}
+            gutterBottom
+          >
             Pricing
           </Typography>
         </Stack>
@@ -59,7 +94,21 @@ const Header = () => {
         >
           <LightModeIcon fontSize="large" />
           <Switch {...label} defaultChecked color="default" />
-          <Chip size="medium" sx={{ borderColor: "white", borderRadius: 2, fontSize: 22, fontColor: "yellow", backgroundColor: "#FDB933", color: "white" }} icon={<DiamondIcon style={{ color: "white" }} />} label={<b>PRO</b>} />
+          <Chip
+            size="medium"
+            sx={{
+              borderColor: "white",
+              borderRadius: 2,
+              fontSize: 22,
+              fontColor: "yellow",
+              backgroundColor: "#FDB933",
+              color: "white",
+            }}
+            className="showHandCursor"
+            onClick={() => navigation.push("/comingsoon")}
+            icon={<DiamondIcon style={{ color: "white" }} />}
+            label={<b>PRO</b>}
+          />
         </Stack>
       </Grid>
 
@@ -70,23 +119,32 @@ const Header = () => {
           alignItems="center"
           justifyContent={{ xs: "center", md: "flex-end" }}
         >
-
           <IconButton
             aria-label="more"
             id="long-button"
-            aria-controls={open ? 'long-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
+            aria-controls={open ? "long-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
             aria-haspopup="true"
             onClick={handleClick}
             sx={{ color: "black" }}
           >
-            {open ? <KeyboardArrowDownIcon fontSize="large" /> : <KeyboardArrowUpIcon fontSize="large" />}
-            <LanguageIcon fontSize="large" />
+            {open ? (
+              <KeyboardArrowDownIcon fontSize="large" />
+            ) : (
+              <KeyboardArrowUpIcon fontSize="large" />
+            )}
+            <Image
+              src={"/icons/lang2.png"}
+              alt="language"
+              width={30}
+              height={30}
+            />
+            {/* <LanguageIcon fontSize="large" /> */}
           </IconButton>
           <Menu
             id="long-menu"
             MenuListProps={{
-              'aria-labelledby': 'long-button',
+              "aria-labelledby": "long-button",
             }}
             anchorEl={anchorEl}
             open={open}
@@ -94,22 +152,40 @@ const Header = () => {
             PaperProps={{
               style: {
                 maxHeight: ITEM_HEIGHT * 4.5,
-                width: '20ch',
+                width: "20ch",
               },
             }}
           >
             {DEFAULT_LANGUAGES.map((option) => (
-              <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-                {option}
+              <MenuItem
+                key={option.name}
+                selected={option.name === "Pyxis"}
+                value={option.name}
+                onClick={(e) => changeLanguage(e, option.code)}
+              >
+                <Image
+                  src={option.img}
+                  width={16}
+                  height={16}
+                  alt={option.name}
+                />
+                &nbsp;
+                {option.name}
               </MenuItem>
             ))}
           </Menu>
           <Box borderRight={1} height="24px"></Box>
-          <Typography variant="h6" gutterBottom>
+          <Typography
+            variant="h6"
+            className="showHandCursor"
+            onClick={() => navigation.push("/comingsoon")}
+            gutterBottom
+          >
             Login
           </Typography>
           <CustomButton
-            onPress={() => { }}
+            className="showHandCursor"
+            onPress={() => navigation.push("/comingsoon")}
             style={{ borderRadius: 5, backgroundColor: "black" }}
             buttonText="Get Started"
           />
