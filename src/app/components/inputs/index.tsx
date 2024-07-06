@@ -74,7 +74,7 @@ export default function Input({
     <TextField
       autoFocus={focused}
       variant="outlined"
-      autoComplete="off"
+      autoComplete="new-password"
       onBlur={onBlur}
       id={id}
       value={values ? values : ""}

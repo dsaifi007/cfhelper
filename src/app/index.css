@@ -7,3 +7,12 @@
 .showHandCursor {
     cursor: pointer;
 }
+.mui-t5hat3{
+    color: rgba(0, 0, 0, 0.6);
+        font-family: __Roboto_42e952, __Roboto_Fallback_42e952;
+        font-weight: 400;
+        font-size: 0.75rem;
+        line-height: 1.66;
+        text-align: left;
+        margin: 4px 2px 1px;
+}

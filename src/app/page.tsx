@@ -110,8 +110,14 @@ export default function Home() {
           touched,
           values,
         }) => {
+          console.log("Error", errors);
           return (
-            <Form onSubmit={handleSubmit}>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit(e);
+              }}
+            >
               <Grid container spacing={2.5}>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={5} lg={5} sm={12} mt={4}>
