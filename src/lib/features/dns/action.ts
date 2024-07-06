@@ -1,11 +1,6 @@
-import { api } from "@/utils/api";
-import { updateGlobalLoader } from "../loader/backdropSlice";
 import { endpoints } from "@/app/utils/endpoints";
-import { updateDns } from "./dnsSlice";
-import { Alert } from "@/utils/Alert";
-import { PLEASE_WAIT_TEXT } from "@/utils/constant";
 import axios from "axios";
-import axiosInstance from "@/utils/axios.instance";
+import { updateDns } from "./dnsSlice";
 
 export const handleDomains = (domains: any, values: any) => {
   return async (dispatch: any, getState: any) => {

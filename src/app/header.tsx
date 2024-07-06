@@ -1,15 +1,31 @@
 "use client";
-import Image from "next/image";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import { Box, Grid, Stack, Switch, Typography } from "@mui/material";
+import { DEFAULT_LANGUAGES, getLanguage, setLanguage } from "@/utils/constant";
+import DiamondIcon from '@mui/icons-material/Diamond';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import LanguageIcon from "@mui/icons-material/Language";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { Box, Chip, Grid, Menu, MenuItem, Stack, Switch, Typography } from "@mui/material";
+import IconButton from '@mui/material/IconButton';
+import Image from "next/image";
+import { useState } from "react";
 import CustomButton from "./components/buttons/CustomButton";
-
 const label = { inputProps: { "aria-label": "Color switch demo" } };
-
+const ITEM_HEIGHT = 48;
 const Header = () => {
+  const [language, setLang] = useState<string>(getLanguage() || "English");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+    setLanguage(event.target.value);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <Grid container alignItems="center" spacing={2}>
+    <Grid container alignItems="center" >
       <Grid item xs={12} md={4} lg={4} sm={12}>
         <Stack
           direction={{ xs: "column", sm: "row" }}
@@ -17,7 +33,7 @@ const Header = () => {
           alignItems="center"
           height={{ xs: "auto", sm: 70 }} // Adjust the height for different screen sizes
         >
-          <Box position="relative" width={150} height={150}>
+          <Box position="relative" width={130} height={130}>
             <Image
               src={"/img/logonew.png"}
               alt="Logo"
@@ -43,6 +59,7 @@ const Header = () => {
         >
           <LightModeIcon fontSize="large" />
           <Switch {...label} defaultChecked color="default" />
+          <Chip size="medium" sx={{ borderColor: "white", borderRadius: 2, fontSize: 22, fontColor: "yellow", backgroundColor: "#FDB933", color: "white" }} icon={<DiamondIcon style={{ color: "white" }} />} label={<b>PRO</b>} />
         </Stack>
       </Grid>
 
@@ -53,21 +70,54 @@ const Header = () => {
           alignItems="center"
           justifyContent={{ xs: "center", md: "flex-end" }}
         >
-          <LanguageIcon fontSize="large" />
+
+          <IconButton
+            aria-label="more"
+            id="long-button"
+            aria-controls={open ? 'long-menu' : undefined}
+            aria-expanded={open ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+            sx={{ color: "black" }}
+          >
+            {open ? <KeyboardArrowDownIcon fontSize="large" /> : <KeyboardArrowUpIcon fontSize="large" />}
+            <LanguageIcon fontSize="large" />
+          </IconButton>
+          <Menu
+            id="long-menu"
+            MenuListProps={{
+              'aria-labelledby': 'long-button',
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                maxHeight: ITEM_HEIGHT * 4.5,
+                width: '20ch',
+              },
+            }}
+          >
+            {DEFAULT_LANGUAGES.map((option) => (
+              <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                {option}
+              </MenuItem>
+            ))}
+          </Menu>
           <Box borderRight={1} height="24px"></Box>
           <Typography variant="h6" gutterBottom>
             Login
           </Typography>
           <CustomButton
-            onPress={() => {}}
+            onPress={() => { }}
             style={{ borderRadius: 5, backgroundColor: "black" }}
             buttonText="Get Started"
           />
         </Stack>
       </Grid>
 
-      <Grid item xs={12}>
-        <Box borderBottom={2}></Box>
+      <Grid xs={12} pt={0}>
+        <Box borderBottom={1}></Box>
       </Grid>
     </Grid>
   );

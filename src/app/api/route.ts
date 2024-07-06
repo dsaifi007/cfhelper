@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const baseURL = 'https://api.cloudflare.com/client/v4/';
 
