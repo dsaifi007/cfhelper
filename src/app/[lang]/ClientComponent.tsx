@@ -1,3 +1,4 @@
+// src/app/[lang]/ClientComponent.tsx
 "use client";
 import {
   FormControl,
@@ -10,43 +11,23 @@ import {
   Typography,
 } from "@mui/material";
 import { Form, Formik } from "formik";
-
-import CustomButton from "./components/buttons/CustomButton";
-import Schema from "./schema";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { useEffect, useState } from "react";
-import { updateDns } from "@/lib/features/dns/dnsSlice";
-import { updateGlobalLoader } from "../lib/features/loader/backdropSlice";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { getAccountID, handleDomains } from "@/lib/features/dns/action";
-import Tracking from "./components/tracking";
+import { useState } from "react";
+import { useAppDispatch } from "@/lib/hooks";
+import Input from "../components/inputs";
+import CustomButton from "../components/buttons/CustomButton";
+import ProgressDialog from "../components/tracking";
+import Schema from "../schema";
 import { setAuthEmail, setToken } from "@/utils/constant";
-import ProgressDialog from "./components/tracking";
-import { useRouter } from "next/navigation";
-import axios from "axios";
-import Input from "./components/inputs";
+import { updateDns } from "@/lib/features/dns/dnsSlice";
+import { handleDomains } from "@/lib/features/dns/action";
 
-export default function Home() {
+const ClientComponent = ({ dict }: any) => {
   const dispatch: any = useAppDispatch();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
-  const { apisStatus }: any = useAppSelector((state: any) => state.dnsSlice);
   const [showPassword, setShowPassword] = useState(false);
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+
   const handleClickShowPassword = () => setShowPassword((show: any) => !show);
 
-  const fetchData = async ({ email, apiKey }: any) => {
-    try {
-      const res = await axios.post("/api", {
-        email: email,
-        apiKey: apiKey,
-      });
-      setData(res.data);
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
   let initialValue = {
     email: "",
     apiKey: "", //"27795ac70b1ba3626a4b11049ba8baac64361",
@@ -59,24 +40,12 @@ export default function Home() {
     https: false,
   };
 
-  // let initialValue = {
-  //   email: "mifipo4963@kinsef.com",
-  //   apiKey: "d1e9601300cf18aafadf6c8e2fc4ac552bf19",
-  //   domains: "testssss.com",
-  //   ip: "12.12.12.15",
-  //   dns: false,
-  //   proxied: false,
-  //   clearCache: false,
-  //   ipv6: false,
-  //   https: false,
-  // };
-
   return (
     <>
       <Grid container spacing={4} rowGap={2}>
         <Grid item xs={12} md={12} lg={12} sm={12} textAlign={"center"}>
           <Typography variant="h4" mt={4} gutterBottom>
-            Adding domains and DNS records in CloudFlare
+            {dict.title}
           </Typography>
           <hr style={{ width: "42%", margin: "auto" }}></hr>
         </Grid>
@@ -86,7 +55,7 @@ export default function Home() {
         initialValues={initialValue}
         enableReinitialize={true}
         validateOnChange={true}
-        validationSchema={Schema.AddDomainForm}
+        validationSchema={Schema.AddDomainForm(dict)}
         onSubmit={(values, { setSubmitting }) => {
           setOpen(true);
           setToken(values.apiKey);
@@ -110,7 +79,6 @@ export default function Home() {
           touched,
           values,
         }) => {
-          console.log("Error", errors);
           return (
             <Form
               onSubmit={(e) => {
@@ -266,4 +234,6 @@ export default function Home() {
       <ProgressDialog open={open} onClose={() => setOpen(false)} />
     </>
   );
-}
+};
+
+export default ClientComponent;

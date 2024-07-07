@@ -5,7 +5,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import LanguageIcon from "@mui/icons-material/Language";
 import LightModeIcon from "@mui/icons-material/LightMode";
-
+import { useTranslations } from "next-intl";
 import {
   Box,
   Chip,
@@ -22,10 +22,11 @@ import language from "./icons/language.png";
 import { useState } from "react";
 import CustomButton from "./components/buttons/CustomButton";
 import { useRouter } from "next/navigation";
+import { getDictionary } from "./[lang]/dictionaries";
 const label = { inputProps: { "aria-label": "Color switch demo" } };
 const ITEM_HEIGHT = 48;
-const Header = () => {
-  const [language, setLang] = useState<string>(getLanguage() || "eng");
+const Header = ({ lang }: any) => {
+  //const dict = await getDictionary(lang);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigation = useRouter();
 
@@ -42,7 +43,8 @@ const Header = () => {
     setAnchorEl(null);
     navigation.push(`/${locale}`);
   };
-  console.log("language", language);
+  console.log("dict", lang);
+
   return (
     <Grid container alignItems="center">
       <Grid item xs={12} md={4} lg={4} sm={12}>
@@ -60,11 +62,14 @@ const Header = () => {
             onClick={() => navigation.push("/")}
           >
             <Image
+              //fill
               src={"/img/logonew.png"}
               alt="Logo"
-              layout="fill"
-              objectFit="contain"
+              // layout="fill"
+              width={120}
+              height={120}
               style={{ display: "inline-block" }}
+              // sizes="(max-width: 120px) 100vw, (max-width: 120px) 50vw, 33vw"
             />
           </Box>
           <Typography
@@ -73,7 +78,8 @@ const Header = () => {
             onClick={() => navigation.push("/features")}
             gutterBottom
           >
-            Features
+            features
+            {/* {dict.features}features */}
           </Typography>
           <Typography
             variant="h5"
@@ -81,7 +87,8 @@ const Header = () => {
             onClick={() => navigation.push("/comingsoon")}
             gutterBottom
           >
-            Pricing
+            pricing
+            {/* {dict.pricing}pricing */}
           </Typography>
         </Stack>
       </Grid>

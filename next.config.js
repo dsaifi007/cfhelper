@@ -1,4 +1,8 @@
 module.exports = {
+  // i18n: {
+  //   locales: ['en', 'uk', 'de'],
+  //   defaultLocale: 'en',
+  // },
   async headers() {
     return [
       {
@@ -19,5 +23,26 @@ module.exports = {
         ],
       },
     ];
-  }
+  },
+
+  //  i18n: {
+
+  //   locales: ['en', 'uk', 'de'],
+  //   defaultLocale: 'en',
+  //   domains: [
+  //     {
+  //       domain: 'localhost',
+  //       defaultLocale: 'en',
+  //     },
+  //     {
+  //       domain: 'localhost',
+  //       defaultLocale: 'uk',
+  //     },
+  //     {
+  //       domain: 'localhost',
+  //       defaultLocale: 'de',
+  //       http: false,
+  //     },
+  //   ],
+  // },
 }

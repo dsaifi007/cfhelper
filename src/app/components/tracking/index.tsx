@@ -48,7 +48,7 @@ const ProgressDialog = ({ open, onClose }: any) => {
           <Typography variant="h6">
             {responseCount == 0
               ? "Please wait..."
-              : (100 / totalDomains.length) * responseCount + "% Completed"}
+              : (responseCount / totalDomains.length) * 100 + "% Completed"}
           </Typography>
         </Box>
         <Box mb={2}>
@@ -56,7 +56,7 @@ const ProgressDialog = ({ open, onClose }: any) => {
             variant="determinate"
             value={
               responseCount > 0
-                ? (100 / totalDomains.length) * responseCount
+                ? (responseCount / totalDomains.length) * 100
                 : 0
             }
             sx={{ height: 15, borderRadius: 5 }}
