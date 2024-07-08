@@ -33,7 +33,7 @@ export const getLanguage = () => {
 }
 export const PLEASE_WAIT_TEXT = "Please wait...";
 
-export const DEFAULT_LANGUAGES = [{ name: "English", img: "/icons/eng.png", code: "en" }, { name: "Русский", img: "/icons/du.png", code: "ru" }, { name: "Українська", img: "/icons/ukr.png", code: "uk" }]; //, { code: "de", name: "Deutsche", img: "/icons/ru.png" }
+export const DEFAULT_LANGUAGES = [{ name: "English", img: "/icons/eng.png", code: "en", newcode: "ENG" }, { name: "Русский", img: "/icons/du.png", code: "ru", newcode: "Pyc" }, { name: "Українська", img: "/icons/ukr.png", code: "uk", newcode: "УKP" }]; //, { code: "de", name: "Deutsche", img: "/icons/ru.png" }
 
 export const getLangImage = (lang: string) => {
     switch (lang) {

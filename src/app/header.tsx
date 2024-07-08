@@ -129,7 +129,7 @@ const Header = () => {
           >
 
             <Typography fontSize={18} sx={{ textTransform: "capitalize" }} >{
-              lan?.code}</Typography>&emsp;
+              lan?.newcode}</Typography>&emsp;
 
 
             {getLangImage(language) && <Image

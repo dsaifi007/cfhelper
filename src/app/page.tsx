@@ -165,7 +165,7 @@ export default function Home() {
                     {t?.eachDomain}
                   </FormHelperText>
                   {errors.domains && touched.domains && (
-                    <p className="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeSmall MuiFormHelperText-contained mui-8zt0fu-MuiFormHelperText-root" id=":R2hd9uecq:-helper-text">{`${errors?.domains}`}</p>
+                    <p className="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeSmall MuiFormHelperText-contained mui-8zt0fu-MuiFormHelperText-root" style={{ color: "#d32f2f" }}>{`${errors?.domains}`}</p>
 
 
                   )}
