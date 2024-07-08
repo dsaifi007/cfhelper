@@ -8,7 +8,7 @@
   "validDomain": "Bitte geben Sie gültige Domains an, jede Domain in einer neuen Zeile beginnend",
   "IPAddresReq": "Bitte geben Sie die IP-Adresse des Servers ein",
   "validIp": "Bitte geben Sie die gültige IP-Adresse des Servers ein",
-  "features": "Funktionen",
+  "feature": "Funktionen",
   "pricing": "Preisgestaltung",
   "login": "Einloggen",
   "getStarted": "Loslegen",

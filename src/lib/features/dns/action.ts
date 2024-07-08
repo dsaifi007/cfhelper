@@ -281,7 +281,7 @@ export const alwaysUseHttp = () => {
     const { zoneId, formData } = getState().dnsSlice;
     try {
       const postData = {
-        value: !formData.https ? 'on' : "off",
+        value: formData.https ? 'on' : "off",
         endpoint: `${endpoints.addZone}/${zoneId}/settings/always_use_https`,
         email: formData.email,
         apiKey: formData.apiKey

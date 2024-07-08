@@ -1,5 +1,5 @@
 "use client";
-import { DEFAULT_LANGUAGES, getLanguageCode, setLanguageCode } from "@/utils/constant";
+import { DEFAULT_LANGUAGES, getLangImage, getLanguageCode, setLanguageCode } from "@/utils/constant";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 import {
@@ -41,6 +41,7 @@ const Header = () => {
     //navigation.push(`/${locale}`);
   };
   console.log("language", language);
+  let lan = DEFAULT_LANGUAGES.find((v: any) => v.code == language);
   return (
     <Grid container alignItems="center">
       <Grid item xs={12} md={4} lg={4} sm={12}>
@@ -126,15 +127,14 @@ const Header = () => {
             onClick={handleClick}
             sx={{ color: "black" }}
           >
-            <Typography fontSize={22} sx={{ textTransform: "uppercase" }}>{language}</Typography>&emsp;
-            {/* {open ? (
-              <KeyboardArrowDownIcon fontSize="large" />
-            ) : (
-              <KeyboardArrowUpIcon fontSize="large" />
-            )} */}
-            <Image
-              src={"/icons/lang2.png"}
-              alt="language"
+
+            <Typography fontSize={18} >{
+              lan?.name}</Typography>&emsp;
+
+
+            <img
+              src={getLangImage(language) || "/icons/lang2.png"}
+              alt={language + lan?.name}
               width={30}
               height={30}
             />
