@@ -158,12 +158,17 @@ export default function Home() {
                     values={values.domains}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(touched.domains) && errors.domains}
-                    helperText={touched.domains && errors.domains}
+                  // error={Boolean(touched.domains) && errors.domains}
+                  // helperText={touched.domains && errors.domains}
                   />
                   <FormHelperText>
                     {t?.eachDomain}
                   </FormHelperText>
+                  {errors.domains && touched.domains && (
+                    <p className="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeSmall MuiFormHelperText-contained mui-8zt0fu-MuiFormHelperText-root" id=":R2hd9uecq:-helper-text">{`${errors?.domains}`}</p>
+
+
+                  )}
                 </Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>

@@ -1,9 +1,9 @@
 {
   "title": "Adding domains and DNS records in CloudFlare",
-  "emailRe": "Please enter your CloudFlare mail",
-  "apiKeyReq": "API Global Key is required field",
-  "apiKeyMust": "API Global Key must be at most 500 characters",
-  "apiKeyMin": "API Global Key must be at least 1 characters",
+  "emailRe": "Please enter your CloudFlare email",
+  "apiKeyReq": "Global API Key is required field",
+  "apiKeyMust": "Global API Key must be at most 500 characters",
+  "apiKeyMin": "Global API Key must be at least 1 characters",
   "domainReq": "Domain is required field",
   "validDomain": "Please provide valid domains, each starting from a new line",
   "IPAddresReq": "Please enter the IP address of the server",

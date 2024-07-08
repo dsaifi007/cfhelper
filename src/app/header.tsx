@@ -128,16 +128,16 @@ const Header = () => {
             sx={{ color: "black" }}
           >
 
-            <Typography fontSize={18} >{
-              lan?.name}</Typography>&emsp;
+            <Typography fontSize={18} sx={{ textTransform: "capitalize" }} >{
+              lan?.code}</Typography>&emsp;
 
 
-            <img
-              src={getLangImage(language) || "/icons/lang2.png"}
+            {getLangImage(language) && <Image
+              src={getLangImage(language)}
               alt={language + lan?.name}
               width={30}
               height={30}
-            />
+            />}
             {/* <LanguageIcon fontSize="large" /> */}
           </IconButton>
           <Menu
