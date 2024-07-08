@@ -83,7 +83,7 @@ export const toAddZone = (formData: any, index: any, domain: any) => {
         dispatch(updateDns({ apisStatus: apis, zoneId: resObject.id }));
 
       }
-      if (formData.clearCache) dispatch(clearCache());
+      if (formData.clearCache) await dispatch(clearCache());
       await dispatch(disabledIPv6());
       await dispatch(alwaysUseHttp());
       dispatch(updateDns({ responseCount: responseCount + 1 }));

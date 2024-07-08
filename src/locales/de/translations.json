@@ -1,3 +1,13 @@
 {
-  "features": "Features de"
+  "title": "Hinzufügen von Domains und DNS-Einträgen in CloudFlare",
+  "emailRe": "Bitte geben Sie Ihre CloudFlare E-Mail-Adresse ein",
+  "apiKeyReq": "API Global Key ist ein Pflichtfeld",
+  "apiKeyMust": "API Global Key darf maximal 500 Zeichen lang sein",
+  "apiKeyMin": "API Global Key muss mindestens 1 Zeichen lang sein",
+  "domainReq": "Domain ist ein Pflichtfeld",
+  "validDomain": "Bitte geben Sie gültige Domains an, jede Domain in einer neuen Zeile beginnend",
+  "IPAddresReq": "Bitte geben Sie die IP-Adresse des Servers ein",
+  "validIp": "Bitte geben Sie die gültige IP-Adresse des Servers ein",
+  "features": "Funktionen",
+  "pricing": "Preisgestaltung"
 }

@@ -1,32 +1,29 @@
 "use client";
 import {
-  FormControl,
   FormControlLabel,
   FormGroup,
   FormHelperText,
   Grid,
   InputLabel,
   Switch,
-  Typography,
+  Typography
 } from "@mui/material";
 import { Form, Formik } from "formik";
 
-import CustomButton from "./components/buttons/CustomButton";
-import Schema from "./schema";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { useEffect, useState } from "react";
+import { handleDomains } from "@/lib/features/dns/action";
 import { updateDns } from "@/lib/features/dns/dnsSlice";
-import { updateGlobalLoader } from "../lib/features/loader/backdropSlice";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { getAccountID, handleDomains } from "@/lib/features/dns/action";
-import Tracking from "./components/tracking";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setAuthEmail, setToken } from "@/utils/constant";
-import ProgressDialog from "./components/tracking";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import CustomButton from "./components/buttons/CustomButton";
 import Input from "./components/inputs";
+import ProgressDialog from "./components/tracking";
+import UseTranslation from "./hooks/useTranslation";
+import Schema from "./schema";
 
 export default function Home() {
+  const t = UseTranslation();
   const dispatch: any = useAppDispatch();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -36,17 +33,10 @@ export default function Home() {
   const [error, setError] = useState(null);
   const handleClickShowPassword = () => setShowPassword((show: any) => !show);
 
-  const fetchData = async ({ email, apiKey }: any) => {
-    try {
-      const res = await axios.post("/api", {
-        email: email,
-        apiKey: apiKey,
-      });
-      setData(res.data);
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
+
+
+
+  useEffect(() => { }, [t])
   let initialValue = {
     email: "",
     apiKey: "", //"27795ac70b1ba3626a4b11049ba8baac64361",
@@ -72,11 +62,11 @@ export default function Home() {
   // };
 
   return (
-    <>
-      <Grid container spacing={4} rowGap={2}>
+    < >
+      <Grid container spacing={4} rowGap={2} >
         <Grid item xs={12} md={12} lg={12} sm={12} textAlign={"center"}>
           <Typography variant="h4" mt={4} gutterBottom>
-            Adding domains and DNS records in CloudFlare
+            {t?.addDomainText}
           </Typography>
           <hr style={{ width: "42%", margin: "auto" }}></hr>
         </Grid>
@@ -86,7 +76,7 @@ export default function Home() {
         initialValues={initialValue}
         enableReinitialize={true}
         validateOnChange={true}
-        validationSchema={Schema.AddDomainForm}
+        validationSchema={Schema.AddDomainForm(t)}
         onSubmit={(values, { setSubmitting }) => {
           setOpen(true);
           setToken(values.apiKey);
@@ -99,6 +89,7 @@ export default function Home() {
               formData: values,
             }),
           );
+
           dispatch(handleDomains(domains, values));
         }}
       >
@@ -121,12 +112,12 @@ export default function Home() {
               <Grid container spacing={2.5}>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={5} lg={5} sm={12} mt={4}>
-                  <InputLabel required>Your Email</InputLabel>
+                  <InputLabel required>{t?.youremail}</InputLabel>
                   <Input
                     focused={false}
                     name={"email"}
                     type={"text"}
-                    placeholder={"e.g. mail@example.com"}
+                    placeholder={t?.exampleEmail}
                     values={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -137,13 +128,13 @@ export default function Home() {
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={5} lg={5} sm={12}>
-                  <InputLabel required>Your API Key</InputLabel>
+                  <InputLabel required>{t?.apiKey}</InputLabel>
                   <Input
                     focused={false}
                     name={"apiKey"}
                     type={showPassword ? "text" : "password"}
                     placeholder={
-                      "Example: g789h67deep45a5544b7b0cupra4678987n22"
+                      t?.exampleKey
                     }
                     handleClickShowPassword={handleClickShowPassword}
                     isEndAdornment={true}
@@ -157,13 +148,13 @@ export default function Home() {
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={5} lg={5} sm={12}>
-                  <InputLabel required>Domains</InputLabel>
+                  <InputLabel required>{t?.domain}</InputLabel>
                   <Input
                     name={"domains"}
                     type={"text"}
                     focused={false}
                     multiline={true}
-                    placeholder={"Example: \ncloudflare.com\nfacebook.com"}
+                    placeholder={t?.exampleDomain}
                     values={values.domains}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -171,18 +162,18 @@ export default function Home() {
                     helperText={touched.domains && errors.domains}
                   />
                   <FormHelperText>
-                    Write each domain on a new line
+                    {t?.eachDomain}
                   </FormHelperText>
                 </Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={5} lg={5} sm={12}>
-                  <InputLabel required>IP</InputLabel>
+                  <InputLabel required>{t?.IP}</InputLabel>
                   <Input
                     name={"ip"}
                     focused={false}
                     type={"text"}
-                    placeholder={"Domains: 88.77.55.86"}
+                    placeholder={t?.domainIP}
                     values={values.ip}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -203,7 +194,7 @@ export default function Home() {
                           name="dns"
                         />
                       }
-                      label="Delete Old DNS Records"
+                      label={t?.deleteOldDns}
                     />
                     <FormControlLabel
                       control={
@@ -214,7 +205,7 @@ export default function Home() {
                           name="proxied"
                         />
                       }
-                      label="Proxied"
+                      label={t?.proxied}
                     />
                     <FormControlLabel
                       control={
@@ -225,7 +216,7 @@ export default function Home() {
                           name="clearCache"
                         />
                       }
-                      label="Clear Cache"
+                      label={t?.clearcached}
                     />
                     <FormControlLabel
                       control={
@@ -236,7 +227,7 @@ export default function Home() {
                           name="ipv6"
                         />
                       }
-                      label="Disable IPv6"
+                      label={t?.disabledIp6}
                     />
                     <FormControlLabel
                       control={
@@ -247,7 +238,7 @@ export default function Home() {
                           name="https"
                         />
                       }
-                      label="Always Use HTTPS"
+                      label={t?.alwaysHttp}
                     />
                   </FormGroup>
                 </Grid>
@@ -255,7 +246,7 @@ export default function Home() {
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
 
                 <Grid item xs={12} md={5} lg={5} sm={12}>
-                  <CustomButton type="submit" buttonText="Submit" />
+                  <CustomButton type="submit" buttonText={t?.submit} />
                 </Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
               </Grid>

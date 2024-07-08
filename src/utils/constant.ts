@@ -7,6 +7,14 @@ export const getToken = () => {
         return localStorage.getItem("access_token");
 }
 
+export const getLanguageCode = () => {
+    if (typeof window !== 'undefined')
+        return localStorage.getItem("lang") || "en";
+}
+export const setLanguageCode = (lang: string) => {
+    if (typeof window !== 'undefined')
+        return localStorage.setItem("lang", lang);
+}
 export const setAuthEmail = (auth_email: string) => {
     if (typeof window !== 'undefined')
         return localStorage.setItem("auth_email", auth_email);

@@ -1,34 +1,29 @@
 "use client";
-import { DEFAULT_LANGUAGES, getLanguage, setLanguage } from "@/utils/constant";
-import DiamondIcon from "@mui/icons-material/Diamond";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import LanguageIcon from "@mui/icons-material/Language";
+import { DEFAULT_LANGUAGES, getLanguageCode, setLanguageCode } from "@/utils/constant";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 import {
   Box,
-  Chip,
   Grid,
   Menu,
   MenuItem,
   Stack,
   Switch,
-  Typography,
+  Typography
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
-import language from "./icons/language.png";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CustomButton from "./components/buttons/CustomButton";
-import { useRouter } from "next/navigation";
+import UseTranslation from "./hooks/useTranslation";
 const label = { inputProps: { "aria-label": "Color switch demo" } };
 const ITEM_HEIGHT = 48;
 const Header = () => {
-  const [language, setLang] = useState<string>(getLanguage() || "eng");
+  const [language, setLang] = useState<string>(getLanguageCode() || "en");
   const [anchorEl, setAnchorEl] = useState(null);
   const navigation = useRouter();
-
+  const t = UseTranslation();
   const open = Boolean(anchorEl);
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -40,7 +35,10 @@ const Header = () => {
 
   const changeLanguage = (e: any, locale: string) => {
     setAnchorEl(null);
-    navigation.push(`/${locale}`);
+    setLanguageCode(locale);
+    setLang(locale)
+    window.location.reload();
+    //navigation.push(`/${locale}`);
   };
   console.log("language", language);
   return (
@@ -73,7 +71,7 @@ const Header = () => {
             onClick={() => navigation.push("/features")}
             gutterBottom
           >
-            Features
+            {t?.feature}
           </Typography>
           <Typography
             variant="h5"
@@ -81,7 +79,7 @@ const Header = () => {
             onClick={() => navigation.push("/comingsoon")}
             gutterBottom
           >
-            Pricing
+            {t?.pricing}
           </Typography>
         </Stack>
       </Grid>
@@ -128,7 +126,7 @@ const Header = () => {
             onClick={handleClick}
             sx={{ color: "black" }}
           >
-            <Typography fontSize={22}>ENG</Typography>&emsp;
+            <Typography fontSize={22} sx={{ textTransform: "uppercase" }}>{language}</Typography>&emsp;
             {/* {open ? (
               <KeyboardArrowDownIcon fontSize="large" />
             ) : (
@@ -160,7 +158,7 @@ const Header = () => {
             {DEFAULT_LANGUAGES.map((option) => (
               <MenuItem
                 key={option.name}
-                selected={option.name === "Pyxis"}
+                selected={option.name === language}
                 value={option.name}
                 onClick={(e) => changeLanguage(e, option.code)}
               >
@@ -182,13 +180,13 @@ const Header = () => {
             onClick={() => navigation.push("/comingsoon")}
             gutterBottom
           >
-            Log In
+            {t?.login}
           </Typography>
           <CustomButton
             className="showHandCursor"
             onPress={() => navigation.push("/comingsoon")}
             style={{ borderRadius: 5, backgroundColor: "black" }}
-            buttonText="Get Started"
+            buttonText={t?.getStarted}
           />
         </Stack>
       </Grid>
