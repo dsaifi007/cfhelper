@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "./header";
+import Header from "./[lang]/header";
 import Footer from "./footer";
 import "./index.css";
 import Toast from "./components/toast";

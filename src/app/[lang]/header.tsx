@@ -20,13 +20,13 @@ import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
 import language from "./icons/language.png";
 import { useState } from "react";
-import CustomButton from "./components/buttons/CustomButton";
+import CustomButton from "../components/buttons/CustomButton";
 import { useRouter } from "next/navigation";
-import { getDictionary } from "./[lang]/dictionaries";
+import { getDictionary } from "./dictionaries";
 const label = { inputProps: { "aria-label": "Color switch demo" } };
 const ITEM_HEIGHT = 48;
-const Header = ({ lang }: any) => {
-  //const dict = await getDictionary(lang);
+const Header = async ({ t }: any) => {
+  // const dict = await getDictionary(lang);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigation = useRouter();
 
@@ -40,10 +40,9 @@ const Header = ({ lang }: any) => {
   };
 
   const changeLanguage = (e: any, locale: string) => {
-    setAnchorEl(null);
     navigation.push(`/${locale}`);
+    setAnchorEl(null);
   };
-  console.log("dict", lang);
 
   return (
     <Grid container alignItems="center">
@@ -78,7 +77,7 @@ const Header = ({ lang }: any) => {
             onClick={() => navigation.push("/features")}
             gutterBottom
           >
-            features
+            {t.features}
             {/* {dict.features}features */}
           </Typography>
           <Typography
@@ -149,6 +148,7 @@ const Header = ({ lang }: any) => {
             />
             {/* <LanguageIcon fontSize="large" /> */}
           </IconButton>
+
           <Menu
             id="long-menu"
             MenuListProps={{
@@ -182,6 +182,7 @@ const Header = ({ lang }: any) => {
               </MenuItem>
             ))}
           </Menu>
+
           <Box borderRight={1} height="24px"></Box>
           <Typography
             variant="h6"

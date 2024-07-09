@@ -21,7 +21,7 @@ import { setAuthEmail, setToken } from "@/utils/constant";
 import { updateDns } from "@/lib/features/dns/dnsSlice";
 import { handleDomains } from "@/lib/features/dns/action";
 
-const ClientComponent = ({ dict }: any) => {
+const Signup = ({ dict }: any) => {
   const dispatch: any = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -236,4 +236,4 @@ const ClientComponent = ({ dict }: any) => {
   );
 };
 
-export default ClientComponent;
+export default Signup;

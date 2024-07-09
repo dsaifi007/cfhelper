@@ -1,6 +1,9 @@
 import { Box, Typography } from "@mui/material";
+import { getDictionary } from "../dictionaries";
 
-const Features = () => {
+const Page = async ({ params: { lang } }: any) => {
+  const dict = await getDictionary(lang); // en
+
   return (
     <Box
       display="flex"
@@ -20,4 +23,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default Page;

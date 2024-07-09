@@ -9,35 +9,20 @@ import { ThemeProvider } from "@mui/material/styles";
 import { Provider } from "react-redux";
 import { store } from "../../lib/store";
 import GlobalLoader from "../components/backdrop";
-import Header from "../header";
-const Layout = ({
-  children,
-  lang,
-}: {
-  children: React.ReactNode;
-  lang: string;
-}) => {
+import Header from "./header";
+import TopHeader from "./TopHeader";
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang={lang}>
-      <head>
-        <title>CFH</title>
-        <link rel="icon" href="/img/favicon.ico" />
-        <meta name="cfh" content="7bc395c1" />
-      </head>
-      <body className="bg-color">
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <Provider store={store}>
-              <Header lang={lang} />
-              <GlobalLoader />
-              {children}
-              <Footer />
-              <Toast />
-            </Provider>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
-      </body>
-    </html>
+    <AppRouterCacheProvider>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <GlobalLoader />
+          {children}
+          <Footer />
+          <Toast />
+        </Provider>
+      </ThemeProvider>
+    </AppRouterCacheProvider>
   );
 };
 

@@ -9,7 +9,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { Provider } from "react-redux";
 import { store } from "../lib/store";
 import GlobalLoader from "./components/backdrop";
-import Header from "./header";
+import Header from "./[lang]/header";
 export default function RootLayout({
   children,
   params,
