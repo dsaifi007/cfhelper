@@ -83,7 +83,7 @@ export const toAddZone = (formData: any, index: any, domain: any) => {
         dispatch(updateDns({ apisStatus: apis, zoneId: resObject.id }));
 
       }
-      if (formData.clearCache) dispatch(clearCache());
+      if (formData.clearCache) await dispatch(clearCache());
       await dispatch(disabledIPv6());
       await dispatch(alwaysUseHttp());
       dispatch(updateDns({ responseCount: responseCount + 1 }));
@@ -281,7 +281,7 @@ export const alwaysUseHttp = () => {
     const { zoneId, formData } = getState().dnsSlice;
     try {
       const postData = {
-        value: !formData.https ? 'on' : "off",
+        value: formData.https ? 'on' : "off",
         endpoint: `${endpoints.addZone}/${zoneId}/settings/always_use_https`,
         email: formData.email,
         apiKey: formData.apiKey

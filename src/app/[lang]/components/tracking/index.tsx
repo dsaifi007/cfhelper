@@ -1,35 +1,33 @@
 "use client";
-import React, { useState } from "react";
+import UseTranslation from "@/app/hooks/useTranslation";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import CloseIcon from "@mui/icons-material/Close";
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Box,
   Button,
-  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  LinearProgress,
   List,
   ListItem,
   ListItemText,
-  IconButton,
-  CircularProgress,
-  LinearProgress,
-  Box,
+  Typography,
 } from "@mui/material";
-import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
-import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
-import { PLEASE_WAIT_TEXT } from "@/utils/constant";
 
 const ProgressDialog = ({ open, onClose }: any) => {
   const { apisStatus, totalDomains, responseCount } = useSelector(
     (state: any) => state.dnsSlice,
   );
-
+  const t = UseTranslation();
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle>
-        Domains Tracking
+        {t?.domainTracking}
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -179,7 +177,7 @@ const ProgressDialog = ({ open, onClose }: any) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">
-          Close
+          {t?.close}
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,14 +1,14 @@
 "use client";
-import { DEFAULT_LANGUAGES, getLanguage, setLanguage } from "@/utils/constant";
-import DiamondIcon from "@mui/icons-material/Diamond";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import LanguageIcon from "@mui/icons-material/Language";
+import {
+  DEFAULT_LANGUAGES,
+  getLangImage,
+  getLanguageCode,
+  setLanguageCode,
+} from "@/utils/constant";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { useTranslations } from "next-intl";
 import {
   Box,
-  Chip,
   Grid,
   Menu,
   MenuItem,
@@ -18,21 +18,25 @@ import {
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
-import language from "./icons/language.png";
-import { useState } from "react";
-import CustomButton from "../components/buttons/CustomButton";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import CustomButton from "./components/buttons/CustomButton";
 import { getDictionary } from "./dictionaries";
 const label = { inputProps: { "aria-label": "Color switch demo" } };
 const ITEM_HEIGHT = 48;
-const Header = async ({ t }: any) => {
+const Header = async ({ t, lang }: any) => {
   // const dict = await getDictionary(lang);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigation = useRouter();
 
   const open = Boolean(anchorEl);
   const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
+    console.log("open", open);
+    if (open) {
+      handleClose();
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
     //setLanguage(event.target.value);
   };
   const handleClose = () => {
@@ -43,6 +47,8 @@ const Header = async ({ t }: any) => {
     navigation.push(`/${locale}`);
     setAnchorEl(null);
   };
+
+  const langCode = DEFAULT_LANGUAGES.find((v: any) => v.code == lang);
 
   return (
     <Grid container alignItems="center">
@@ -61,33 +67,30 @@ const Header = async ({ t }: any) => {
             onClick={() => navigation.push("/")}
           >
             <Image
-              //fill
               src={"/img/logonew.png"}
               alt="Logo"
-              // layout="fill"
-              width={120}
-              height={120}
+              layout="fill"
+              objectFit="contain"
               style={{ display: "inline-block" }}
-              // sizes="(max-width: 120px) 100vw, (max-width: 120px) 50vw, 33vw"
             />
           </Box>
+
           <Typography
             variant="h5"
             className="showHandCursor"
             onClick={() => navigation.push("/features")}
             gutterBottom
           >
-            {t.features}
+            {t.feature}
             {/* {dict.features}features */}
           </Typography>
           <Typography
             variant="h5"
             className="showHandCursor"
-            onClick={() => navigation.push("/comingsoon")}
+            onClick={() => navigation.push("/features")}
             gutterBottom
           >
-            pricing
-            {/* {dict.pricing}pricing */}
+            {t.pricing}
           </Typography>
         </Stack>
       </Grid>
@@ -127,32 +130,32 @@ const Header = async ({ t }: any) => {
         >
           <IconButton
             aria-label="more"
-            id="long-button"
-            aria-controls={open ? "long-menu" : undefined}
+            id="basic-menu"
+            aria-controls={open ? "basic-menu" : undefined}
             aria-expanded={open ? "true" : undefined}
             aria-haspopup="true"
             onClick={handleClick}
             sx={{ color: "black" }}
           >
-            <Typography fontSize={22}>ENG</Typography>&emsp;
-            {/* {open ? (
-              <KeyboardArrowDownIcon fontSize="large" />
-            ) : (
-              <KeyboardArrowUpIcon fontSize="large" />
-            )} */}
-            <Image
-              src={"/icons/lang2.png"}
-              alt="language"
-              width={30}
-              height={30}
-            />
+            <Typography fontSize={18} sx={{ textTransform: "capitalize" }}>
+              {langCode?.newcode}
+            </Typography>
+            &emsp;
+            {getLangImage(lang) && (
+              <Image
+                src={getLangImage(lang)}
+                alt={lang}
+                width={30}
+                height={30}
+              />
+            )}
             {/* <LanguageIcon fontSize="large" /> */}
           </IconButton>
 
           <Menu
-            id="long-menu"
+            id="basic-menu"
             MenuListProps={{
-              "aria-labelledby": "long-button",
+              "aria-labelledby": "basic-button",
             }}
             anchorEl={anchorEl}
             open={open}
@@ -167,7 +170,7 @@ const Header = async ({ t }: any) => {
             {DEFAULT_LANGUAGES.map((option) => (
               <MenuItem
                 key={option.name}
-                selected={option.name === "Pyxis"}
+                selected={option.name === lang}
                 value={option.name}
                 onClick={(e) => changeLanguage(e, option.code)}
               >
@@ -187,16 +190,16 @@ const Header = async ({ t }: any) => {
           <Typography
             variant="h6"
             className="showHandCursor"
-            onClick={() => navigation.push("/comingsoon")}
+            onClick={() => navigation.push("/features")}
             gutterBottom
           >
-            Log In
+            {t.login}
           </Typography>
           <CustomButton
             className="showHandCursor"
-            onPress={() => navigation.push("/comingsoon")}
+            onPress={() => navigation.push("/features")}
             style={{ borderRadius: 5, backgroundColor: "black" }}
-            buttonText="Get Started"
+            buttonText={t?.getStarted}
           />
         </Stack>
       </Grid>

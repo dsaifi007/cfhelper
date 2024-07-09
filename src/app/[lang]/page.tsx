@@ -6,8 +6,8 @@ export default async function Page({ params: { lang }, Children }: any) {
   const dict = await getDictionary(lang);
   return (
     <>
-      <Header t={dict} />
-      <Signup dict={dict} lang={lang} />;
+      <Header t={dict} lang={lang} />
+      <Signup t={dict} lang={lang} />
     </>
   );
 }

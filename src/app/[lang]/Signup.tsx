@@ -1,7 +1,5 @@
-// src/app/[lang]/ClientComponent.tsx
 "use client";
 import {
-  FormControl,
   FormControlLabel,
   FormGroup,
   FormHelperText,
@@ -11,23 +9,29 @@ import {
   Typography,
 } from "@mui/material";
 import { Form, Formik } from "formik";
-import { useState } from "react";
-import { useAppDispatch } from "@/lib/hooks";
-import Input from "../components/inputs";
-import CustomButton from "../components/buttons/CustomButton";
-import ProgressDialog from "../components/tracking";
-import Schema from "../schema";
-import { setAuthEmail, setToken } from "@/utils/constant";
-import { updateDns } from "@/lib/features/dns/dnsSlice";
+
 import { handleDomains } from "@/lib/features/dns/action";
+import { updateDns } from "@/lib/features/dns/dnsSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { setAuthEmail, setToken } from "@/utils/constant";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import CustomButton from "./components/buttons/CustomButton";
+import Input from "./components/inputs";
+import ProgressDialog from "./components/tracking";
+import Schema from "../schema";
 
-const Signup = ({ dict }: any) => {
+export default function Sigmup({ t }: any) {
   const dispatch: any = useAppDispatch();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const { apisStatus }: any = useAppSelector((state: any) => state.dnsSlice);
   const [showPassword, setShowPassword] = useState(false);
-
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
   const handleClickShowPassword = () => setShowPassword((show: any) => !show);
 
+  useEffect(() => {}, [t]);
   let initialValue = {
     email: "",
     apiKey: "", //"27795ac70b1ba3626a4b11049ba8baac64361",
@@ -40,12 +44,24 @@ const Signup = ({ dict }: any) => {
     https: false,
   };
 
+  // let initialValue = {
+  //   email: "mifipo4963@kinsef.com",
+  //   apiKey: "d1e9601300cf18aafadf6c8e2fc4ac552bf19",
+  //   domains: "testssss.com",
+  //   ip: "12.12.12.15",
+  //   dns: false,
+  //   proxied: false,
+  //   clearCache: false,
+  //   ipv6: false,
+  //   https: false,
+  // };
+
   return (
     <>
       <Grid container spacing={4} rowGap={2}>
         <Grid item xs={12} md={12} lg={12} sm={12} textAlign={"center"}>
           <Typography variant="h4" mt={4} gutterBottom>
-            {dict.title}
+            {t?.addDomainText}
           </Typography>
           <hr style={{ width: "42%", margin: "auto" }}></hr>
         </Grid>
@@ -55,7 +71,7 @@ const Signup = ({ dict }: any) => {
         initialValues={initialValue}
         enableReinitialize={true}
         validateOnChange={true}
-        validationSchema={Schema.AddDomainForm(dict)}
+        validationSchema={Schema.AddDomainForm(t)}
         onSubmit={(values, { setSubmitting }) => {
           setOpen(true);
           setToken(values.apiKey);
@@ -68,6 +84,7 @@ const Signup = ({ dict }: any) => {
               formData: values,
             }),
           );
+
           dispatch(handleDomains(domains, values));
         }}
       >
@@ -79,6 +96,7 @@ const Signup = ({ dict }: any) => {
           touched,
           values,
         }) => {
+          console.log("Error", errors);
           return (
             <Form
               onSubmit={(e) => {
@@ -89,12 +107,12 @@ const Signup = ({ dict }: any) => {
               <Grid container spacing={2.5}>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={5} lg={5} sm={12} mt={4}>
-                  <InputLabel required>Your Email</InputLabel>
+                  <InputLabel required>{t?.youremail}</InputLabel>
                   <Input
                     focused={false}
                     name={"email"}
                     type={"text"}
-                    placeholder={"e.g. mail@example.com"}
+                    placeholder={t?.exampleEmail}
                     values={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -105,14 +123,13 @@ const Signup = ({ dict }: any) => {
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={5} lg={5} sm={12}>
-                  <InputLabel required>Your API Key</InputLabel>
+                  <InputLabel required>{t?.apiKey}</InputLabel>
                   <Input
                     focused={false}
                     name={"apiKey"}
                     type={showPassword ? "text" : "password"}
-                    placeholder={
-                      "Example: g789h67deep45a5544b7b0cupra4678987n22"
-                    }
+                    showPassword={showPassword}
+                    placeholder={t?.exampleKey}
                     handleClickShowPassword={handleClickShowPassword}
                     isEndAdornment={true}
                     values={values.apiKey}
@@ -125,32 +142,36 @@ const Signup = ({ dict }: any) => {
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={5} lg={5} sm={12}>
-                  <InputLabel required>Domains</InputLabel>
+                  <InputLabel required>{t?.domain}</InputLabel>
                   <Input
                     name={"domains"}
                     type={"text"}
                     focused={false}
                     multiline={true}
-                    placeholder={"Example: \ncloudflare.com\nfacebook.com"}
+                    placeholder={t?.exampleDomain}
                     values={values.domains}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(touched.domains) && errors.domains}
-                    helperText={touched.domains && errors.domains}
+                    // error={Boolean(touched.domains) && errors.domains}
+                    // helperText={touched.domains && errors.domains}
                   />
-                  <FormHelperText>
-                    Write each domain on a new line
-                  </FormHelperText>
+                  <FormHelperText>{t?.eachDomain}</FormHelperText>
+                  {errors.domains && touched.domains && (
+                    <p
+                      className="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeSmall MuiFormHelperText-contained mui-t5hat3"
+                      style={{ color: "#d32f2f" }}
+                    >{`${errors?.domains}`}</p>
+                  )}
                 </Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
                 <Grid item xs={12} md={5} lg={5} sm={12}>
-                  <InputLabel required>IP</InputLabel>
+                  <InputLabel required>{t?.IP}</InputLabel>
                   <Input
                     name={"ip"}
                     focused={false}
                     type={"text"}
-                    placeholder={"Domains: 88.77.55.86"}
+                    placeholder={t?.domainIP}
                     values={values.ip}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -171,7 +192,7 @@ const Signup = ({ dict }: any) => {
                           name="dns"
                         />
                       }
-                      label="Delete Old DNS Records"
+                      label={t?.deleteOldDns}
                     />
                     <FormControlLabel
                       control={
@@ -182,7 +203,7 @@ const Signup = ({ dict }: any) => {
                           name="proxied"
                         />
                       }
-                      label="Proxied"
+                      label={t?.proxied}
                     />
                     <FormControlLabel
                       control={
@@ -193,7 +214,7 @@ const Signup = ({ dict }: any) => {
                           name="clearCache"
                         />
                       }
-                      label="Clear Cache"
+                      label={t?.clearcached}
                     />
                     <FormControlLabel
                       control={
@@ -204,7 +225,7 @@ const Signup = ({ dict }: any) => {
                           name="ipv6"
                         />
                       }
-                      label="Disable IPv6"
+                      label={t?.disabledIp6}
                     />
                     <FormControlLabel
                       control={
@@ -215,7 +236,7 @@ const Signup = ({ dict }: any) => {
                           name="https"
                         />
                       }
-                      label="Always Use HTTPS"
+                      label={t?.alwaysHttp}
                     />
                   </FormGroup>
                 </Grid>
@@ -223,7 +244,7 @@ const Signup = ({ dict }: any) => {
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
 
                 <Grid item xs={12} md={5} lg={5} sm={12}>
-                  <CustomButton type="submit" buttonText="Submit" />
+                  <CustomButton type="submit" buttonText={t?.submit} />
                 </Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
               </Grid>
@@ -234,6 +255,4 @@ const Signup = ({ dict }: any) => {
       <ProgressDialog open={open} onClose={() => setOpen(false)} />
     </>
   );
-};
-
-export default Signup;
+}
