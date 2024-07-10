@@ -42,7 +42,10 @@ export default function LangMenu({ lang }: any) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Typography fontSize={18} sx={{ textTransform: "capitalize" }}>
+            <Typography
+              fontSize={18}
+              sx={{ textTransform: "capitalize", color: "black" }}
+            >
               {langCode?.newcode}
             </Typography>
             &emsp;

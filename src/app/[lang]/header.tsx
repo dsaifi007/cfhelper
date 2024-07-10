@@ -131,7 +131,7 @@ const Header = async ({ t, lang }: any) => {
           justifyContent={{ xs: "center", md: "flex-end" }}
         >
           <LangMenu lang={lang} />
-          <Tooltip title=""></Tooltip>
+          <div></div>
 
           <Box borderRight={1} height="24px"></Box>
           <Typography
