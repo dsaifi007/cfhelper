@@ -14,6 +14,7 @@ import {
   MenuItem,
   Stack,
   Switch,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
@@ -22,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CustomButton from "./components/buttons/CustomButton";
 import { getDictionary } from "./dictionaries";
+import LangMenu from "./components/lang/lang";
 const label = { inputProps: { "aria-label": "Color switch demo" } };
 const ITEM_HEIGHT = 48;
 const Header = async ({ t, lang }: any) => {
@@ -128,63 +130,8 @@ const Header = async ({ t, lang }: any) => {
           alignItems="center"
           justifyContent={{ xs: "center", md: "flex-end" }}
         >
-          <IconButton
-            aria-label="more"
-            id="basic-menu"
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-expanded={open ? "true" : undefined}
-            aria-haspopup="true"
-            onClick={handleClick}
-            sx={{ color: "black" }}
-          >
-            <Typography fontSize={18} sx={{ textTransform: "capitalize" }}>
-              {langCode?.newcode}
-            </Typography>
-            &emsp;
-            {getLangImage(lang) && (
-              <Image
-                src={getLangImage(lang)}
-                alt={lang}
-                width={30}
-                height={30}
-              />
-            )}
-            {/* <LanguageIcon fontSize="large" /> */}
-          </IconButton>
-
-          <Menu
-            id="basic-menu"
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              style: {
-                maxHeight: ITEM_HEIGHT * 4.5,
-                width: "20ch",
-              },
-            }}
-          >
-            {DEFAULT_LANGUAGES.map((option) => (
-              <MenuItem
-                key={option.name}
-                selected={option.name === lang}
-                value={option.name}
-                onClick={(e) => changeLanguage(e, option.code)}
-              >
-                <Image
-                  src={option.img}
-                  width={16}
-                  height={16}
-                  alt={option.name}
-                />
-                &nbsp;
-                {option.name}
-              </MenuItem>
-            ))}
-          </Menu>
+          <LangMenu lang={lang} />
+          <Tooltip title=""></Tooltip>
 
           <Box borderRight={1} height="24px"></Box>
           <Typography
