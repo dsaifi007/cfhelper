@@ -24,7 +24,7 @@ export const getAccountID = (domain: any, index: any, formData: any) => {
     // apis[index] = { ...apis[index], domainName: domain, step1: false, proxied: formData.proxied, message: "",name_servers:[] }
 
     try {
-      const respData = await axios.get(`api?email=${formData.email}&apiKey=${formData.apiKey}&endpoint=zones`);
+      const respData = await axios.get(`/api?email=${formData.email}&apiKey=${formData.apiKey}&endpoint=zones`);
       const result = respData.data.result;
 
       const apis = [...apisStatus];
@@ -58,7 +58,7 @@ export const toAddZone = (formData: any, index: any, domain: any) => {
 
     try {
       const apis = [...apisStatus];
-      const respData = await axios.post("api", postData);
+      const respData = await axios.post("/api", postData);
       const result = respData.data.result;
       console.log("step-1", respData.data.success)
 
@@ -70,7 +70,7 @@ export const toAddZone = (formData: any, index: any, domain: any) => {
         await dispatch(toAddRecordForZone(result.id, formData, index));
 
       } else {
-        const url = `api?email=${formData.email}&apiKey=${formData.apiKey}&endpoint=zones`
+        const url = `/api?email=${formData.email}&apiKey=${formData.apiKey}&endpoint=zones`
         const newRes = await axios.get(url);
 
         const resObject = newRes.data.result.find((v: any) => v.name == domain.trim());
@@ -103,7 +103,7 @@ export const checkDnsExist = (domain: any, index: any, formData: any) => {
     try {
       let endpoint = `zones/${zoneId}/dns_records`;
 
-      const respData = await axios.get(`api?email=${formData.email}&apiKey=${formData.apiKey}&endpoint=${endpoint}`);
+      const respData = await axios.get(`/api?email=${formData.email}&apiKey=${formData.apiKey}&endpoint=${endpoint}`);
       const result = respData.data.result;
 
       const apis = [...apisStatus];
@@ -150,7 +150,7 @@ export const updateZone = (formData: any, dns_record_id: any, domainname: any, i
     };
     try {
       //const apis = [...apisStatus];
-      const respData = await axios.patch("api", postData);
+      const respData = await axios.patch("/api", postData);
 
       if (respData.data.success) {
         //apis[index] = { ...apis[index], step3: true, message: "" };
@@ -199,8 +199,8 @@ export const toAddRecordForZone = (accountID: any, formData: any, index: any) =>
 
     try {
       const apis = [...apisStatus];
-      const respData = await axios.post("api", postData);
-      const respData1 = await axios.post("api", postData1);
+      const respData = await axios.post("/api", postData);
+      const respData1 = await axios.post("/api", postData1);
       if (respData.data.success) {
         apis[index] = { ...apis[index], step3: true, message: "" };
         dispatch(updateDns({ dns_record_id: respData.data.result.id, apisStatus: apis }));
@@ -235,7 +235,7 @@ export const deleteOldDns = () => {
           zoneId: zoneId
         }
       };
-      await axios.delete("api", data);
+      await axios.delete("/api", data);
     } catch (error) {
       console.error("Error deleting old DNS:", handleError(error));
     }
@@ -252,7 +252,7 @@ export const clearCache = () => {
         email: formData.email,
         apiKey: formData.apiKey
       };
-      await axios.post("api", postData);
+      await axios.post("/api", postData);
     } catch (error) {
       console.error("Error clearing cache:", handleError(error));
     }
@@ -264,12 +264,12 @@ export const disabledIPv6 = () => {
     const { zoneId, formData } = getState().dnsSlice;
     try {
       const postData = {
-        value: !formData.proxied ? "on" : "off",
+        value: formData.ipv6 ? "off" : "on",
         endpoint: `${endpoints.addZone}/${zoneId}/settings/ipv6`,
         email: formData.email,
         apiKey: formData.apiKey
       };
-      await axios.patch("api", postData);
+      await axios.patch("/api", postData);
     } catch (error) {
       console.error("Error disabling IPv6:", handleError(error));
     }
@@ -286,7 +286,7 @@ export const alwaysUseHttp = () => {
         email: formData.email,
         apiKey: formData.apiKey
       };
-      await axios.patch("api", postData);
+      await axios.patch("/api", postData);
     } catch (error) {
       console.error("Error setting always use HTTPS:", handleError(error));
     }
