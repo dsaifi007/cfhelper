@@ -23,11 +23,11 @@ const ProgressDialog = ({ open, onClose }: any) => {
   const { apisStatus, totalDomains, responseCount } = useSelector(
     (state: any) => state.dnsSlice,
   );
-  const t = UseTranslation();
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle>
-        {t?.domainTracking}
+        Domain Tracking
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -177,7 +177,7 @@ const ProgressDialog = ({ open, onClose }: any) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">
-          {t?.close}
+          close
         </Button>
       </DialogActions>
     </Dialog>
