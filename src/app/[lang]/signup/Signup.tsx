@@ -34,7 +34,7 @@ export default function Signup({ t }: any) {
     email: "",
     name: "", //"27795ac70b1ba3626a4b11049ba8baac64361",
     password: "",
-    terms: [""],
+    terms: [],
   };
 
   return (
