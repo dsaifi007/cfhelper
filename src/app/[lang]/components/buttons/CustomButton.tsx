@@ -10,6 +10,7 @@ export default function CustomButton({
   onPress = () => {},
   style,
   size = "large",
+  color = "black",
 }: any) {
   return (
     <Button

@@ -31,6 +31,11 @@ export const getLanguage = () => {
     if (typeof window !== 'undefined')
         return localStorage.getItem("language") || "English";
 }
+export const setAccessToken = (token: string) => {
+    if (typeof window !== 'undefined')
+        return localStorage.setItem("language", token);
+}
+
 export const PLEASE_WAIT_TEXT = "Please wait...";
 
 export const DEFAULT_LANGUAGES = [{ name: "English", img: "/icons/eng.png", code: "en", newcode: "ENG" }, { name: "Русский", img: "/icons/du.png", code: "ru", newcode: "РУС" }, { name: "Українська", img: "/icons/ukr.png", code: "uk", newcode: "УKP" }]; //, { code: "de", name: "Deutsche", img: "/icons/ru.png" }

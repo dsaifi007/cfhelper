@@ -20,7 +20,7 @@ const postApiCall = (
       successCallback(response);
     })
     .catch((error: any) => {
-      errorCallback(error.response.data);
+      errorCallback(error?.response?.data);
     });
 };
 

@@ -25,7 +25,44 @@ const AddDomainForm = (t: any) => {
   });
 };
 
+const SignupForm = (t: any) => {
+  return Yup.object().shape({
+    email: Yup.string().email().trim().required(t.singupEmail),
+    name: Yup.string().trim().required(t.nameR),
+    password: Yup.string()
+      .trim()
+      .required(t?.passwordR)
+      .min(8, t.passChar)
+      .matches(/^(?=.*[A-Z])(?=.*\d).+$/, t.passV),
+    terms: Yup.array()
+      .of(Yup.string().required(t.acceptterms))
+      .min(1, t.acceptterms)
+      .required(t.acceptterms),
+  });
+};
+
+const LoginForm = (t: any) => {
+  return Yup.object().shape({
+    email: Yup.string().email().trim().required(t.singupEmail),
+    password: Yup.string().trim().required(t?.passwordR),
+  });
+};
+const ResetPassword = (t: any) => {
+  return Yup.object().shape({
+    password: Yup.string()
+      .trim()
+      .required(t?.passwordR)
+      .min(8, t.passChar)
+      .matches(/^(?=.*[A-Z])(?=.*\d).+$/, t.passV),
+    password_confirmation: Yup.string()
+      .required(t.cPassword)
+      .oneOf([Yup.ref("password")], t.newPassText),
+  });
+};
 const Schema = {
   AddDomainForm,
+  SignupForm,
+  LoginForm,
+  ResetPassword,
 };
 export default Schema;
