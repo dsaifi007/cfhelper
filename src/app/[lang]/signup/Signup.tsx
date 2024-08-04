@@ -31,10 +31,10 @@ export default function Signup({ t }: any) {
 
   useEffect(() => {}, [t]);
   let initialValue = {
-    email: "test@yopmail.com  ",
-    name: "Test", //"27795ac70b1ba3626a4b11049ba8baac64361",
-    password: "TEst@1234",
-    terms: ["terms"],
+    email: "",
+    name: "", //"27795ac70b1ba3626a4b11049ba8baac64361",
+    password: "",
+    terms: [""],
   };
 
   return (
@@ -158,7 +158,15 @@ export default function Signup({ t }: any) {
                 <Grid item xs={12} md={4.5} lg={4.5} sm={12}></Grid>
                 <Grid item xs={12} md={4.5} lg={4.5} sm={12}></Grid>
                 <Grid item xs={12} md={5} lg={5} sm={12}>
-                  <CustomButton type="submit" buttonText={t?.submit} />
+                  <CustomButton
+                    type="submit"
+                    buttonText={t.createaccount}
+                    style={{
+                      borderRadious: 1,
+                      backgroundColor: "black",
+                      width: "60%",
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={12} md={3.5} lg={3.5} sm={12}></Grid>
               </Grid>

@@ -56,5 +56,6 @@
   "alreadyLogin": "Already have an account? ",
   "cpassword": "Confirm Password",
   "cPassword": "Please provide a confirm password",
-  "newPassText": "Confirm password should be matched with password"
+  "newPassText": "Confirm password should be matched with password",
+  "createaccount": "Create an account"
 }

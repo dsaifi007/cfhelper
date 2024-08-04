@@ -137,14 +137,14 @@ const Header = async ({ t, lang }: any) => {
           <Typography
             variant="h6"
             className="showHandCursor"
-            onClick={() => navigation.push("/features")}
+            onClick={() => navigation.push("/login")}
             gutterBottom
           >
             {t.login}
           </Typography>
           <CustomButton
             className="showHandCursor"
-            onPress={() => navigation.push("/features")}
+            onPress={() => navigation.push("/signup")}
             style={{ borderRadius: 5, backgroundColor: "black" }}
             buttonText={t?.getStarted}
           />
