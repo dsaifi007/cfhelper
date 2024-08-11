@@ -301,7 +301,7 @@ export const getAllZones = (values: any, router: any) => {
   return async (dispatch: any, getState: any) => {
     try {
       dispatch(updateGlobalLoader(true));
-      const respData = await axios.get(`/api?email=${values.email}&apiKey=${values.apiKey}&endpoint=zones`);
+      const respData = await axios.get(`/api?email=${values.email}&apiKey=${values.apiKey}&endpoint=zones?per_page=500`);
       const result = respData.data.result;
       dispatch(updateDns({ zonesList: result }));
 
@@ -314,12 +314,17 @@ export const getAllZones = (values: any, router: any) => {
   };
 };
 
-export const removelDomains = () => {
+export const removelDomains = (nav: any) => {
   return async (dispatch: any, getState: any) => {
     let { zonesList } = getState().dnsSlice;
+
     for (let index = 0; index < zonesList.length; index++) {
+      console.log("zonesList[index]['id']", zonesList[index]['id']);
+
+      // Await the dispatch call to ensure it completes before moving to the next one
       await dispatch(deleteDomains(zonesList[index]['id']));
     }
+    nav.push("/domain-removes");
   };
 };
 
@@ -327,10 +332,13 @@ export const deleteDomains = (zoneId: string) => {
   return async (dispatch: any, getState: any) => {
     dispatch(updateGlobalLoader(true));
     const { formData } = getState().dnsSlice;
+
     try {
+
       const data = {
         headers: {},
         data: {
+          // `${endpoints.addZone}/${zoneId}/dns_record_id/${dns_record_id}`,
           endpoint: `${endpoints.addZone}/${zoneId}`,
           email: formData.email,
           apiKey: formData.apiKey,
@@ -338,10 +346,14 @@ export const deleteDomains = (zoneId: string) => {
           flag: true
         }
       };
+      console.log("data11111111111", data)
+      // Axios DELETE requests usually use the second argument for config, so it should be:
       await axios.delete("/api", data);
+
       dispatch(updateGlobalLoader(false));
     } catch (error) {
       console.error("Error deleting old DNS:", handleError(error));
+      dispatch(updateGlobalLoader(false));  // Make sure to hide loader on error as well
     }
   };
 };

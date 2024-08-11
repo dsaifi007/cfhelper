@@ -152,9 +152,71 @@ export async function GET(request: NextRequest) {
         });
     }
 }
-
 // Handle other HTTP methods if needed
 export async function DELETE(request: NextRequest) {
+    try {
+        let response: any = {};
+        let postData = await request.json();
+        // const BASE_URL = baseURL;
+        //const { email: emails, apiKey: apiKeys } = postData;
+        let baseUrl1 = baseURL + postData.endpoint;
+        //   const { email, apiKey, endpoint, ...rest } = postData;
+        const headers = {
+            'X-Auth-Email': postData.email,
+            //'Authorization': postData.apiKey,
+            'X-Auth-Key': postData.apiKey
+            // 'Content-Type': 'application/json',
+        }
+
+
+        console.log("postData", postData, baseUrl1)
+        if (postData.flag) {
+            response = await axios.delete(baseUrl1, { headers: headers });
+        } else {
+            // console.log("1234567898765", baseUrl1);
+
+            response = await axios.get(baseUrl1, { headers: headers });
+
+            // const filterData = response.data.result.length > 0 ? :
+
+            console.log("response", response.data.result);
+            for (let i = 0; i < response.data.result.length; i++) {
+                const deleteUrl = 'https://api.cloudflare.com/client/v4/' + "zones/" + postData.zoneId + "/dns_records/" + response.data.result[i].id;
+                console.log("deleteUrl", deleteUrl)
+
+                const response1 = await axios.delete(deleteUrl, { headers: headers });
+            }
+            return NextResponse.json({ ...response.data });
+        }
+        return NextResponse.json({ ...response.data });
+
+    } catch (error: any) {
+        if (error.response && error.response.data && error.response.data.errors) {
+            const { errors } = error.response.data;
+            const errorMessage = errors.map((err: any) => ({
+                code: err.code,
+                message: err.message,
+            }));
+
+            return NextResponse.json({
+                success: false,
+                errors: errorMessage,
+                messages: [],
+                result: null,
+            });
+        }
+
+        // Default error response
+        return NextResponse.json({
+            success: false,
+            errors: [{ code: error.response?.status, message: error.message }],
+            messages: [],
+            result: null,
+        });
+    }
+}
+// Handle other HTTP methods if needed
+export async function DELETE1111(request: NextRequest) {
     try {
         let postData = await request.json();
         // const BASE_URL = baseURL;

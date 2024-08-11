@@ -40,9 +40,9 @@ const Domains = ({ t }: any) => {
         validateOnChange={true}
         validationSchema={Schema.zoneList(t)}
         onSubmit={(values, { setSubmitting }) => {
-          dispatch(removelDomains());
-          Alert(1, t.success);
-          router.push("/domain-removes");
+          dispatch(removelDomains(router));
+          // Alert(1, t.success);
+          //router.push("/domain-removes");
         }}
       >
         {({
