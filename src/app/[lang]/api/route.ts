@@ -170,7 +170,7 @@ export async function DELETE(request: NextRequest) {
 
         if (postData?.flag == true) {
             await axios.delete(baseUrl1, { headers: headers });
-            return false;
+            return NextResponse.json({ "statue": true });
         }
 
         console.log("1234567898765", baseUrl1);
