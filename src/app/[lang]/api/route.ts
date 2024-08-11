@@ -168,6 +168,11 @@ export async function DELETE(request: NextRequest) {
             // 'Content-Type': 'application/json',
         }
 
+        if (postData?.flag == true) {
+            await axios.delete(baseUrl1, { headers: headers });
+            return false;
+        }
+
         console.log("1234567898765", baseUrl1);
 
         const response = await axios.get(baseUrl1, { headers: headers });

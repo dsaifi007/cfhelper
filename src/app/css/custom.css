@@ -28,7 +28,18 @@
     margin: 4px 2px 1px;
 }
 
-
+.mui-1mrx0jw-MuiFormHelperText-root {
+    color: rgba(0, 0, 0, 0.6);
+    font-family: '__Roboto_d779e4', '__Roboto_Fallback_d779e4';
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.66;
+    text-align: left;
+    margin-top: 4px;
+    margin-right: 14px;
+    margin-bottom: 0;
+    margin-left: 0px !important;
+}
 
 @keyframes spin {
     0% {

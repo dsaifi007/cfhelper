@@ -54,10 +54,10 @@ const Header = async ({ t, lang }: any) => {
 
   return (
     <Grid container alignItems="center">
-      <Grid item xs={12} md={4} lg={4} sm={12}>
+      <Grid item xs={12} md={7} lg={7} sm={12}>
         <Stack
           direction={{ xs: "column", sm: "row" }}
-          spacing={{ xs: 2, sm: 4, md: 4 }}
+          spacing={{ xs: 2, sm: 8, md: 8 }}
           alignItems="center"
           height={{ xs: "auto", sm: 70 }} // Adjust the height for different screen sizes
         >
@@ -94,10 +94,34 @@ const Header = async ({ t, lang }: any) => {
           >
             {t.pricing}
           </Typography>
+          <Typography
+            variant="h5"
+            className="showHandCursor"
+            onClick={() => navigation.push("/domain-removes")}
+            gutterBottom
+          >
+            {t.removeZones}
+          </Typography>
+          <Typography
+            variant="h5"
+            className="showHandCursor"
+            onClick={() => navigation.push("/domain-status")}
+            gutterBottom
+          >
+            {t.domainStatus}
+          </Typography>
+          <Typography
+            variant="h5"
+            className="showHandCursor"
+            onClick={() => navigation.push("/features")}
+            gutterBottom
+          >
+            {t.aiGenDomain}
+          </Typography>
         </Stack>
       </Grid>
 
-      <Grid item xs={12} md={4} lg={4} sm={12}>
+      <Grid item xs={12} md={2} lg={2} sm={12}>
         <Stack
           direction="row"
           spacing={3}
@@ -123,7 +147,7 @@ const Header = async ({ t, lang }: any) => {
         </Stack>
       </Grid>
 
-      <Grid item xs={12} md={4} lg={4} sm={12}>
+      <Grid item xs={12} md={3} lg={3} sm={12}>
         <Stack
           direction="row"
           spacing={3}

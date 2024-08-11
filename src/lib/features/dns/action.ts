@@ -1,6 +1,9 @@
 import { endpoints } from "@/app/utils/endpoints";
 import axios from "axios";
 import { updateDns } from "./dnsSlice";
+import { updateGlobalLoader } from "../loader/backdropSlice";
+import { api } from "@/utils/api";
+import { Alert } from "@/utils/Alert";
 
 export const handleDomains = (domains: any, values: any) => {
   return async (dispatch: any, getState: any) => {
@@ -290,5 +293,76 @@ export const alwaysUseHttp = () => {
     } catch (error) {
       console.error("Error setting always use HTTPS:", handleError(error));
     }
+  };
+};
+
+
+export const getAllZones = (values: any, router: any) => {
+  return async (dispatch: any, getState: any) => {
+    try {
+      dispatch(updateGlobalLoader(true));
+      const respData = await axios.get(`/api?email=${values.email}&apiKey=${values.apiKey}&endpoint=zones`);
+      const result = respData.data.result;
+      dispatch(updateDns({ zonesList: result }));
+
+      dispatch(updateGlobalLoader(false));
+      router.push("/domain-removes/domains")
+    } catch (error) {
+      dispatch(updateGlobalLoader(false));
+      console.error("Error fetching account ID:", error);
+    }
+  };
+};
+
+export const removelDomains = () => {
+  return async (dispatch: any, getState: any) => {
+    let { zonesList } = getState().dnsSlice;
+    for (let index = 0; index < zonesList.length; index++) {
+      await dispatch(deleteDomains(zonesList[index]['id']));
+    }
+  };
+};
+
+export const deleteDomains = (zoneId: string) => {
+  return async (dispatch: any, getState: any) => {
+    dispatch(updateGlobalLoader(true));
+    const { formData } = getState().dnsSlice;
+    try {
+      const data = {
+        headers: {},
+        data: {
+          endpoint: `${endpoints.addZone}/${zoneId}`,
+          email: formData.email,
+          apiKey: formData.apiKey,
+          zoneId: zoneId,
+          flag: true
+        }
+      };
+      await axios.delete("/api", data);
+      dispatch(updateGlobalLoader(false));
+    } catch (error) {
+      console.error("Error deleting old DNS:", handleError(error));
+    }
+  };
+};
+
+export const getDomainInfo = (values: any, navigate: any) => {
+  return (dispatch: any, getState: any) => {
+    dispatch(updateGlobalLoader(true));
+    api.postApiCall(
+      endpoints.getDomainInfo,
+      values,
+      (respData: any) => {
+        dispatch(updateGlobalLoader(false));
+        dispatch(updateDns({ domainInfo: respData.data }))
+        navigate.push("/domain-status/info");
+      },
+      (error: any) => {
+        Alert(2, error.msg);
+        dispatch(updateGlobalLoader(false));
+        console.log("eeee", error);
+
+      }
+    );
   };
 };

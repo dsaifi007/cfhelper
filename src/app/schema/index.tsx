@@ -41,6 +41,15 @@ const SignupForm = (t: any) => {
   });
 };
 
+const zoneList = (t: any) => {
+  return Yup.object().shape({
+    terms: Yup.array()
+      .of(Yup.string().required(t.acceptterms))
+      .min(1, t.acceptterms)
+      .required(t.acceptterms),
+  });
+};
+
 const LoginForm = (t: any) => {
   return Yup.object().shape({
     email: Yup.string().email().trim().required(t.singupEmail),
@@ -59,10 +68,37 @@ const ResetPassword = (t: any) => {
       .oneOf([Yup.ref("password")], t.newPassText),
   });
 };
+
+const DomainRemoval = (t: any) => {
+  return Yup.object().shape({
+    email: Yup.string().email().trim().required(t?.emailRe),
+    apiKey: Yup.string()
+      .trim()
+      .required(t?.apiKeyReq)
+      .max(500, t?.apiKeyMust)
+      .min(1, t?.apiKeyMin),
+  });
+};
+
+const domainStatus = (t: any) => {
+  return Yup.object().shape({
+    domain: Yup.string()
+      .trim()
+      .required(t?.domainReq)
+      .test("valid-domains", t.validDomain, (value) => {
+        if (!value) return false;
+        const domains = value.split("\n").map((domain) => domain.trim());
+        return domains.every((domain) => DOMAIN_REGEX.test(domain));
+      }),
+  });
+};
 const Schema = {
   AddDomainForm,
+  DomainRemoval,
   SignupForm,
   LoginForm,
   ResetPassword,
+  zoneList,
+  domainStatus,
 };
 export default Schema;

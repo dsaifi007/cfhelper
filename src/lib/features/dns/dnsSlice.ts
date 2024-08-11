@@ -7,7 +7,9 @@ export interface dnsState {
     formData: any,
     apisStatus: any,
     totalDomains: [],
-    responseCount: number
+    responseCount: number,
+    zonesList: [],
+    domainInfo: object
 }
 
 const initialState: dnsState = {
@@ -17,7 +19,9 @@ const initialState: dnsState = {
     formData: {},
     apisStatus: [{}],
     totalDomains: [],
-    responseCount: 0
+    responseCount: 0,
+    zonesList: [],
+    domainInfo: {}
 };
 
 export const dnsSlice = createSlice({

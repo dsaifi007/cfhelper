@@ -5,5 +5,6 @@ export const endpoints = {
     signup: "signup",
     login: "login",
     forgotPassword: "forget-password",
-    resetPassword: "reset-password"
+    resetPassword: "reset-password",
+    getDomainInfo: "get-domain-info"
 }
