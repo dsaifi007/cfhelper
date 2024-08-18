@@ -49,7 +49,7 @@ export default function ForgotPassword({ t }: any) {
       <Grid container spacing={4} rowGap={2} mt={10}>
         <Grid item xs={12} md={12} lg={12} sm={12} textAlign={"center"}>
           <Typography variant="h4" mt={4} gutterBottom>
-            {t?.loginText}
+            {t.forgotPass}
           </Typography>
         </Grid>
       </Grid>

@@ -76,5 +76,7 @@
   "expiresOn": "Expires On",
   "updatedOn": "Updated On",
   "domainInfo": "Status Info for",
-  "back": "Back"
+  "back": "Back",
+  "forgotPass": "Enter your email for reset the passoword",
+  "resetPassword": "Update password"
 }

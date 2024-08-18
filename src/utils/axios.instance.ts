@@ -1,7 +1,8 @@
 import axios from "axios";
 import { getAuthEmail, getToken } from "./constant";
+
 const axiosInstance = axios.create({
-  baseURL: "https://backend.cfhelper.com/api/",//process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: "https://backend.cfhelper.com/api/",//process.env.NEXT_PUBLIC_API_BASE_URL, // "http://127.0.0.1:8001/api/"
   timeout: 100000,
   // headers: {
   //   "X-Auth-Email": getAuthEmail(),

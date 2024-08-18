@@ -16,6 +16,8 @@ export default function ResetPassword({ t }: any) {
   const dispatch: any = useAppDispatch();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword1, setShowPassword1] = useState(false);
   const searchParam = useSearchParams();
   const email = searchParam.get("email");
   const token = searchParam.get("token");
@@ -26,13 +28,15 @@ export default function ResetPassword({ t }: any) {
     token: token,
     email: email,
   };
+  const handleClickShowPassword = () => setShowPassword((show: any) => !show);
+  const handleClickShowPassword1 = () => setShowPassword1((show: any) => !show);
 
   return (
     <>
       <Grid container spacing={4} rowGap={2} mt={10}>
         <Grid item xs={12} md={12} lg={12} sm={12} textAlign={"center"}>
           <Typography variant="h4" mt={4} gutterBottom>
-            {t?.loginText}
+            {t.resetPassword}
           </Typography>
         </Grid>
       </Grid>
@@ -68,8 +72,11 @@ export default function ResetPassword({ t }: any) {
                   <Input
                     name={"password"}
                     focused={false}
-                    type={"password"}
+                    type={showPassword ? "text" : "password"}
+                    showPassword={showPassword}
+                    handleClickShowPassword={handleClickShowPassword}
                     label={t.password}
+                    isEndAdornment={true}
                     placeholder={t?.password}
                     values={values.password}
                     onChange={handleChange}
@@ -84,8 +91,11 @@ export default function ResetPassword({ t }: any) {
                   <Input
                     name={"password_confirmation"}
                     focused={false}
-                    type={"password"}
+                    type={showPassword1 ? "text" : "password"}
+                    showPassword={showPassword1}
+                    handleClickShowPassword={handleClickShowPassword1}
                     label={t.cpassword}
+                    isEndAdornment={true}
                     placeholder={t?.cpassword}
                     values={values.password_confirmation}
                     onChange={handleChange}
