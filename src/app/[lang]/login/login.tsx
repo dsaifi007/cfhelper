@@ -141,12 +141,15 @@ export default function Login({ t }: any) {
 
                 <Grid item xs={12} md={4.5} lg={4.5} sm={12}></Grid>
                 <Grid item xs={12} md={3} lg={3} sm={12}>
-                  <Link href="/forgotpassword">
+                  <Link
+                    href="/forgotpassword"
+                    style={{ textDecoration: "none" }}
+                  >
                     <Typography
                       display="flex"
                       justifyContent="center"
                       alignItems="center"
-                      sx={{ color: "black" }}
+                      sx={{ color: "black", textDecoration: "none" }}
                     >
                       {t.forgotPassword}
                     </Typography>

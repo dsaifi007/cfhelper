@@ -78,5 +78,7 @@
   "domainInfo": "Status Info for",
   "back": "Back",
   "forgotPass": "Enter your email for reset the passoword",
-  "resetPassword": "Update password"
+  "resetPassword": "Update password",
+  "passwT": " At least one uppercase letter and one digit",
+  "passmaxChar": "Max 36 characters allowed"
 }

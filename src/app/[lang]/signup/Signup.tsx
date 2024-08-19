@@ -1,5 +1,6 @@
 "use client";
 import {
+  Box,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -7,6 +8,7 @@ import {
   FormHelperText,
   Grid,
   InputLabel,
+  LinearProgress,
   Switch,
   Typography,
 } from "@mui/material";
@@ -28,6 +30,8 @@ export default function Signup({ t }: any) {
   const dispatch: any = useAppDispatch();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {}, [t]);
   let initialValue = {
@@ -116,7 +120,13 @@ export default function Signup({ t }: any) {
                     label={t.password}
                     placeholder={t?.password}
                     values={values.password}
-                    onChange={handleChange}
+                    onChange={(e: any) => {
+                      if (e.target.value.length < 9) {
+                        setProgress(e.target.value.length);
+                      }
+                      handleChange(e);
+                    }}
+                    //setProgress
                     onBlur={handleBlur}
                     error={Boolean(touched.password) && errors.password}
                     helperText={touched.password && errors.password}
@@ -128,7 +138,36 @@ export default function Signup({ t }: any) {
                   >
                     {t.passValid}
                   </p> */}
+                  <LinearProgress
+                    variant="determinate"
+                    value={(progress / 8) * 100}
+                    // color={
+                    //   !(touched.password && errors.password)
+                    //     ? "success"
+                    //     : "error"
+                    // }
+                    color={
+                      errors.password ? "error" : "success" // Red color for error, green for success
+                    }
+                    sx={{ mt: 5, height: 6 }}
+                  />
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: 1,
+                    }}
+                  >
+                    <Typography variant="body2" color="textSecondary">
+                      {t.passwT}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {values.password.length}/8
+                    </Typography>
+                  </Box>
                 </Grid>
+
                 <Grid item xs={12} md={4.5} lg={4.5} sm={12}></Grid>
 
                 <Grid item xs={12} md={4.5} lg={4.5} sm={12}></Grid>
