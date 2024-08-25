@@ -79,6 +79,7 @@ const Header = async ({ t, lang }: any) => {
 
           <Typography
             variant="h5"
+            fontSize={20}
             className="showHandCursor"
             onClick={() => navigation.push("/features")}
             gutterBottom
@@ -88,6 +89,7 @@ const Header = async ({ t, lang }: any) => {
           </Typography>
           <Typography
             variant="h5"
+            fontSize={20}
             className="showHandCursor"
             onClick={() => navigation.push("/features")}
             gutterBottom
@@ -96,6 +98,7 @@ const Header = async ({ t, lang }: any) => {
           </Typography>
           <Typography
             variant="h5"
+            fontSize={20}
             className="showHandCursor"
             onClick={() => navigation.push("/domain-removes")}
             gutterBottom
@@ -104,6 +107,7 @@ const Header = async ({ t, lang }: any) => {
           </Typography>
           <Typography
             variant="h5"
+            fontSize={20}
             className="showHandCursor"
             onClick={() => navigation.push("/domain-status")}
             gutterBottom
@@ -112,6 +116,7 @@ const Header = async ({ t, lang }: any) => {
           </Typography>
           <Typography
             variant="h5"
+            fontSize={20}
             className="showHandCursor"
             onClick={() => navigation.push("/features")}
             gutterBottom
@@ -159,16 +164,17 @@ const Header = async ({ t, lang }: any) => {
 
           <Box borderRight={1} height="24px"></Box>
           <Typography
+            fontSize={20}
             variant="h6"
             className="showHandCursor"
-            onClick={() => navigation.push(lang + "/login")}
+            onClick={() => navigation.push("/login")}
             gutterBottom
           >
             {t.login}
           </Typography>
           <CustomButton
             className="showHandCursor"
-            onPress={() => navigation.push(lang + "/signup")}
+            onPress={() => navigation.push("/signup")}
             style={{ borderRadius: 5, backgroundColor: "black" }}
             buttonText={t?.getStarted}
           />

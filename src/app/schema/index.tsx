@@ -33,7 +33,7 @@ const SignupForm = (t: any) => {
       .trim()
       .required(t?.passwordR)
       .min(8, t.passChar)
-      .min(36, t.passmaxChar)
+      .max(36, t.passmaxChar)
       .matches(/^(?=.*[A-Z])(?=.*\d).+$/, t.passV),
     terms: Yup.array()
       .of(Yup.string().required(t.acceptterms))

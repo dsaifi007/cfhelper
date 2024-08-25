@@ -114,11 +114,13 @@ export default function Login({ t }: any) {
                   <Input
                     name={"password"}
                     focused={false}
-                    type={"password"}
+                    type={showPassword ? "text" : "password"}
                     label={t.password}
                     placeholder={t?.password}
                     values={values.password}
                     onChange={handleChange}
+                    handleClickShowPassword={handleClickShowPassword}
+                    isEndAdornment={true}
                     onBlur={handleBlur}
                     error={Boolean(touched.password) && errors.password}
                     helperText={touched.password && errors.password}

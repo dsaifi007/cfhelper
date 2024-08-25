@@ -30,8 +30,10 @@ export default function Signup({ t }: any) {
   const dispatch: any = useAppDispatch();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [progress, setProgress] = useState(0);
+  const handleClickShowPassword = () => setShowPassword((show: any) => !show);
 
   useEffect(() => {}, [t]);
   let initialValue = {
@@ -116,7 +118,6 @@ export default function Signup({ t }: any) {
                   <Input
                     name={"password"}
                     focused={false}
-                    type={"text"}
                     label={t.password}
                     placeholder={t?.password}
                     values={values.password}
@@ -126,6 +127,9 @@ export default function Signup({ t }: any) {
                       }
                       handleChange(e);
                     }}
+                    type={showPassword ? "text" : "password"}
+                    handleClickShowPassword={handleClickShowPassword}
+                    isEndAdornment={true}
                     //setProgress
                     onBlur={handleBlur}
                     error={Boolean(touched.password) && errors.password}
