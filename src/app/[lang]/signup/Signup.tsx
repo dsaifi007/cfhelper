@@ -134,6 +134,7 @@ export default function Signup({ t }: any) {
                     onBlur={handleBlur}
                     error={Boolean(touched.password) && errors.password}
                     helperText={touched.password && errors.password}
+                    showPassword={showPassword}
                   />
 
                   {/* <p
